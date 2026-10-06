@@ -1,0 +1,39 @@
+/* Card de depoimento — card de artigo do Journal do modelo (.articles-row .article-preview),
+   só com texto: filete no topo, citação em serif, nome + data em mono. */
+
+.card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: var(--s-7);
+  min-height: 100%;
+  padding-top: var(--s-5);
+  border-top: 1px solid var(--c-chip-dark);
+}
+
+.quote {
+  color: var(--c-white);
+  text-wrap: pretty;
+}
+
+.quote::before {
+  content: "“";
+}
+
+.quote::after {
+  content: "”";
+}
+
+.caption {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-1);
+}
+
+.card .name {
+  color: var(--c-white);
+}
+
+.card .date {
+  color: var(--c-meta-dark);
+}

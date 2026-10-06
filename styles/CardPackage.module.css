@@ -1,0 +1,55 @@
+/* Card de pacote — card de produto do modelo (.products-row__product) sem mídia:
+   texto sobre o creme, filete no topo, botão na base (cards da linha com a mesma altura). */
+
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  padding-top: var(--s-5);
+  border-top: 1px solid var(--c-ink);
+}
+
+.badge {
+  align-self: flex-start;
+  margin-bottom: var(--s-3);
+}
+
+.name {
+  margin-bottom: var(--s-2);
+  font-feature-settings: "case", "ordn", "dlig";
+}
+
+/* preço em mono, como os números da Facts strip */
+.price {
+  margin-bottom: var(--s-3);
+  font-family: var(--f-mono);
+  font-size: var(--t-link);
+  line-height: var(--lh-link);
+  letter-spacing: var(--ls-meta-hero);
+  text-transform: uppercase;
+  color: var(--c-ink);
+}
+
+.for {
+  margin-bottom: var(--s-4);
+}
+
+.list {
+  margin-bottom: var(--s-6);
+  border-top: 1px solid var(--c-line);
+}
+
+.list li {
+  padding-block: var(--s-1);
+  border-bottom: 1px solid var(--c-line);
+}
+
+.list .more {
+  padding-block: var(--s-2);
+  border-bottom: 0;
+}
+
+.button {
+  margin-top: auto;
+}

@@ -1,0 +1,32 @@
+/* Placeholder de mídia: fundo --c-line + rótulo mono (VENUE-TEMPLATE.md §2). */
+
+.placeholder {
+  position: relative;
+  display: grid;
+  /* o container pode mover o rótulo quando há texto por cima (--placeholder-align) */
+  place-items: var(--placeholder-align, center);
+  width: 100%;
+  height: 100%;
+  padding: var(--s-4);
+}
+
+.light {
+  background: var(--c-line);
+}
+
+.light .label {
+  color: var(--c-graphite);
+}
+
+.dark {
+  background: var(--c-graphite);
+}
+
+.dark .label {
+  color: var(--c-line);
+}
+
+.label {
+  line-height: var(--lh-meta-hero);
+  text-align: center;
+}

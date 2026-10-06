@@ -1,0 +1,96 @@
+/* Getting Here (seção 11b, opcional): 2 colunas no desktop como o FAQ — informações à esquerda,
+   mapa à direita; tempos de carro em mono, no estilo da faixa de números. */
+
+.grid {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  gap: var(--col-gap);
+  align-items: start;
+}
+
+.eyebrow {
+  margin-bottom: var(--s-2);
+}
+
+.title {
+  margin-bottom: var(--s-3);
+  text-wrap: balance;
+}
+
+.text {
+  text-wrap: pretty;
+}
+
+.times {
+  margin-block: var(--s-6) var(--s-5);
+  border-top: 1px solid var(--c-ink);
+}
+
+.time {
+  display: flex;
+  align-items: baseline;
+  gap: var(--s-1);
+  padding-block: var(--s-3);
+  border-bottom: 1px solid var(--c-line);
+  font-family: var(--f-mono);
+  font-size: var(--t-meta-hero);
+  line-height: var(--lh-meta-hero);
+  letter-spacing: var(--ls-meta-hero);
+  text-transform: uppercase;
+  color: var(--c-ink);
+}
+
+.value {
+  font-size: var(--t-h3);
+  line-height: var(--lh-h3);
+}
+
+.dot {
+  color: var(--c-stone);
+}
+
+.address {
+  margin-bottom: var(--s-2);
+  font-style: normal;
+}
+
+/* Where guests stay */
+.stay {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  gap: var(--col-gap);
+  margin-top: var(--s-8);
+  padding-top: var(--s-5);
+  border-top: 1px solid var(--c-line);
+}
+
+.stayBody {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--s-3);
+}
+
+.nearby {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-0) var(--s-3);
+  color: var(--c-ink);
+}
+
+/* ---------- abaixo de 992px: uma coluna, mapa embaixo das informações ---------- */
+@media (max-width: 991.98px) {
+  .grid,
+  .stay {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .grid {
+    gap: var(--s-7);
+  }
+
+  .stay {
+    gap: var(--s-3);
+    margin-top: var(--s-7);
+  }
+}

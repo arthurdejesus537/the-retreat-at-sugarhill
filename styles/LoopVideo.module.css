@@ -1,0 +1,20 @@
+/* Loop de seção: vídeo por cima do poster (o Media embaixo), mesmo recorte (object-fit: cover). */
+
+.caixa {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity var(--hero-fade) var(--ease);
+}
+
+.pronto {
+  opacity: 1;
+}

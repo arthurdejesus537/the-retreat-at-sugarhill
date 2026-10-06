@@ -1,0 +1,26 @@
+/* Selo — medido em montamont.com (.label--theme-lemon-whisper). */
+
+.badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--badge-gap);
+  max-width: 100%;
+  padding: var(--pad-badge);
+  border-radius: var(--r-badge);
+  background: var(--c-signal);
+  color: var(--c-ink);
+}
+
+.icon {
+  display: inline-flex;
+  flex-shrink: 0;
+  font-size: var(--badge-icon);
+}
+
+.label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-align: center;
+}

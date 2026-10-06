@@ -1,0 +1,43 @@
+/* Logo: arquivo do venue ou nome em serif, na altura do header. */
+
+.logo {
+  display: grid;
+  place-items: center;
+  height: var(--header-h);
+}
+
+.name {
+  font-family: var(--f-serif);
+  font-size: var(--t-h3-serif);
+  line-height: 1;
+  letter-spacing: var(--ls-h3-serif);
+  white-space: nowrap;
+}
+
+/* nome na sans: o peso e o espaçamento dos títulos do site */
+.name[data-fonte="sans"] {
+  font-family: var(--f-sans);
+  font-weight: var(--w-display);
+  letter-spacing: var(--ls-display);
+}
+
+.image {
+  width: auto;
+  height: var(--logo-h);
+}
+
+/* mobile: nomes longos quebram em 2 linhas no meio, sem encostar em "Text us" e no menu */
+@media (max-width: 991.98px) {
+  .logo {
+    height: auto;
+    max-width: calc(100vw - 2 * var(--s-9));
+  }
+
+  .name {
+    font-size: var(--t-link);
+    line-height: var(--lh-link);
+    white-space: normal;
+    text-align: center;
+    text-wrap: balance;
+  }
+}

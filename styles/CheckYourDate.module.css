@@ -1,0 +1,71 @@
+/* Check Your Date — Destino em destaque do modelo (.text-image-preview) virado em CTA final:
+   foto full-bleed de fundo, card claro com a chamada (abre o card Schedule a Tour) à direita,
+   depoimento à esquerda. */
+
+.banner {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: var(--feature-gap);
+  min-height: var(--large-h);
+  padding: var(--s-9) var(--gutter) var(--gutter);
+  color: var(--c-white);
+}
+
+.banner .background {
+  --placeholder-align: start start;
+  position: absolute;
+  inset: 0;
+  filter: brightness(var(--media-dim));
+}
+
+.quote {
+  position: relative;
+  z-index: 1;
+  max-width: var(--stays-head-w);
+  margin-bottom: var(--s-4);
+}
+
+.quote blockquote {
+  margin-bottom: var(--s-3);
+  text-wrap: pretty;
+}
+
+.banner .caption {
+  color: var(--c-meta-dark);
+}
+
+.card {
+  position: relative;
+  z-index: 1;
+  flex: 0 0 calc(100% * 5 / 12);
+  margin-left: auto;
+  padding: var(--s-6);
+  background: var(--c-paper);
+  color: var(--c-ink);
+}
+
+.title {
+  margin-bottom: var(--s-3);
+  text-wrap: balance;
+}
+
+.support {
+  margin-bottom: var(--s-6);
+}
+
+/* ---------- abaixo de 992px: card em largura total, depoimento acima ---------- */
+@media (max-width: 991.98px) {
+  .banner {
+    flex-direction: column;
+    align-items: stretch;
+    padding-top: var(--s-9);
+  }
+
+  .card {
+    flex: none;
+    margin-left: 0;
+    padding: var(--s-5);
+  }
+}

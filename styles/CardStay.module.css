@@ -1,0 +1,92 @@
+/* Card de stay — medido em montamont.com (.stay-mini-preview). */
+
+.card {
+  position: relative;
+}
+
+.mediaLink {
+  position: relative;
+  z-index: 2;
+  display: block;
+  margin-bottom: var(--card-media-gap);
+}
+
+.media {
+  aspect-ratio: var(--stay-ratio);
+}
+
+.headline {
+  padding-inline: var(--card-inset);
+}
+
+.location {
+  margin-bottom: var(--s-2);
+}
+
+.title {
+  margin-bottom: var(--s-4);
+}
+
+/* o link do título cobre o card inteiro */
+.titleLink::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+.data {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-3);
+  padding-right: var(--card-data-pad);
+}
+
+.description {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  overflow: hidden;
+}
+
+.tags {
+  position: relative;
+  z-index: 2;
+}
+
+/* rótulo "Ver" no hover da imagem (só em dispositivos com hover) */
+.view {
+  display: none;
+}
+
+@media (hover: hover) {
+  .media {
+    transition: filter var(--dur-fast) var(--ease);
+  }
+
+  .view {
+    display: inline-flex;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    translate: -50% -50%;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .mediaLink:hover .media {
+    filter: brightness(var(--media-dim-hover));
+  }
+
+  .mediaLink:hover .view {
+    opacity: 1;
+  }
+}
+
+/* ---------- abaixo de 992px ---------- */
+@media (max-width: 991.98px) {
+  .location {
+    margin-bottom: var(--s-1);
+  }
+}

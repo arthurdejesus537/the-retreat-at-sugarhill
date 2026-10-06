@@ -1,0 +1,125 @@
+/* Carrossel — medido no Swiper do original (.home-collections, .articles-row). */
+
+.carousel {
+  --per-view: var(--per-view-d);
+  --gap: var(--slide-gap, var(--carousel-gap));
+}
+
+.headline {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-inline: var(--gutter);
+  margin-bottom: var(--stack-title);
+}
+
+/* ---------- setas ---------- */
+.nav {
+  display: flex;
+  align-items: center;
+  gap: var(--s-0);
+}
+
+.arrow {
+  display: inline-flex;
+  padding: var(--s-1);
+  font-size: var(--carousel-arrow);
+  color: var(--arrow-color);
+}
+
+.arrow:disabled {
+  color: var(--c-stone);
+  cursor: not-allowed;
+}
+
+.light {
+  --arrow-color: var(--c-ink);
+  --bar-thumb: var(--c-ink);
+  --bar-track: var(--carousel-bar-track);
+}
+
+.dark {
+  --arrow-color: var(--c-white);
+  --bar-thumb: var(--c-white);
+  --bar-track: var(--c-bar-dark);
+}
+
+/* ---------- trilho ---------- */
+.viewport {
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: var(--gutter);
+  scrollbar-width: none;
+}
+
+.viewport::-webkit-scrollbar {
+  display: none;
+}
+
+/* durante o arraste, o snap atrapalharia o movimento contínuo */
+.viewport[data-dragging] {
+  scroll-snap-type: none;
+  cursor: grabbing;
+  user-select: none;
+}
+
+.track {
+  display: flex;
+  align-items: flex-start; /* como o Swiper: slides não esticam até o mais alto */
+  gap: var(--gap);
+  padding-left: var(--gutter);
+}
+
+/* o padding-right de um flex com overflow não entra no scroll: espaçador no lugar dele */
+.track::after {
+  content: "";
+  flex: 0 0 max(0px, calc(var(--gutter) - var(--gap)));
+}
+
+.slide {
+  /* 100% = viewport menos o gutter esquerdo; tira o direito também para caber N slides */
+  flex: 0 0 calc((100% - var(--gutter) - (var(--per-view) - 1) * var(--gap)) / var(--per-view));
+  min-width: 0;
+  scroll-snap-align: start;
+}
+
+.auto .slide {
+  flex: 0 0 auto;
+}
+
+/* ---------- barra de progresso ---------- */
+.bar {
+  width: 100%;
+  max-width: var(--carousel-bar-w);
+  height: var(--carousel-bar-h);
+  margin: var(--carousel-bar-top) auto 0;
+  border-radius: var(--r-bar);
+  background: var(--bar-track);
+  overflow: hidden;
+}
+
+.thumb {
+  height: 100%;
+  border-radius: var(--r-bar);
+  background: var(--bar-thumb);
+  cursor: grab;
+}
+
+/* ---------- breakpoints (no fim para vencer as regras base) ---------- */
+@media (max-width: 991.98px) {
+  .carousel {
+    --per-view: var(--per-view-t);
+  }
+
+  /* setas só no desktop, como no original */
+  .nav {
+    display: none;
+  }
+}
+
+@media (max-width: 767.98px) {
+  .carousel {
+    --per-view: var(--per-view-m);
+  }
+}

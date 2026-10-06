@@ -1,0 +1,105 @@
+/* FAQ (VENUE-TEMPLATE §4, seção 11): 2 colunas no desktop, acordeão à direita.
+   Pergunta em sans, resposta no corpo de texto (o §4 cita --t-small, que não existe: --t-body). */
+
+.grid {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  gap: var(--col-gap);
+}
+
+.aside {
+  position: sticky;
+  top: calc(var(--header-h) + var(--s-6));
+  align-self: start;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.title {
+  margin-bottom: var(--s-5);
+}
+
+.list {
+  border-top: 1px solid var(--c-ink);
+  interpolate-size: allow-keywords;
+}
+
+.item {
+  border-bottom: 1px solid var(--c-line);
+}
+
+.question {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--s-4);
+  padding-block: var(--s-4);
+  font-family: var(--f-sans);
+  font-weight: var(--w-display);
+  font-size: var(--t-footer-link);
+  line-height: var(--lh-footer-link);
+  letter-spacing: var(--ls-footer-link);
+  cursor: pointer;
+  list-style: none;
+}
+
+.question::-webkit-details-marker {
+  display: none;
+}
+
+.icon {
+  flex-shrink: 0;
+  display: inline-flex;
+  font-size: var(--carousel-arrow);
+  transition: transform var(--dur-fast) var(--ease);
+}
+
+.item[open] .icon {
+  transform: scaleY(-1);
+}
+
+.answer {
+  max-width: calc(100% - 2 * var(--s-7));
+  padding-bottom: var(--s-5);
+  text-wrap: pretty;
+}
+
+/* abre e fecha com altura animada onde o navegador suporta (::details-content) */
+.item::details-content {
+  block-size: 0;
+  overflow: hidden;
+  transition:
+    block-size var(--dur-fast) var(--ease),
+    content-visibility var(--dur-fast) allow-discrete;
+}
+
+.item[open]::details-content {
+  block-size: auto;
+}
+
+@media (hover: hover) {
+  .question span:first-child {
+    transition: opacity var(--dur-fast) var(--ease);
+  }
+
+  .question:hover span:first-child {
+    opacity: var(--text-dim-hover);
+  }
+}
+
+/* ---------- abaixo de 992px: uma coluna ---------- */
+@media (max-width: 991.98px) {
+  .grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--s-7);
+  }
+
+  .aside {
+    position: static;
+  }
+
+  .answer {
+    max-width: none;
+  }
+}

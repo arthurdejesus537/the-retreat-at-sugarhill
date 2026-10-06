@@ -1,0 +1,623 @@
+/* Card Schedule a Tour: suspenso no centro da tela sobre o site escurecido e desfocado.
+   Celular primeiro: o mesmo card, com --tour-margem nas laterais; no desktop, --tour-w. */
+
+.raiz {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-tour);
+  display: grid;
+  place-items: center;
+  padding: var(--tour-margem);
+  background: var(--c-tour-fundo);
+  -webkit-backdrop-filter: blur(var(--tour-blur));
+  backdrop-filter: blur(var(--tour-blur));
+  overscroll-behavior: contain;
+}
+
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: min(var(--tour-w), 100%);
+  max-height: calc(100dvh - 2 * var(--tour-margem));
+  overflow: hidden;
+  background: var(--c-paper);
+  color: var(--c-ink);
+  border-radius: var(--tour-r);
+}
+
+/* coluna do formulário: no celular é o card inteiro; com foto (768px ou mais), a da esquerda */
+.coluna {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 0;
+}
+
+/* tela baixa (celular deitado): o conteúdo rola dentro do card, a barra fica na base */
+.rolagem {
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: var(--tour-pad);
+  padding-bottom: calc(var(--tour-pad) + var(--tour-barra-h));
+}
+
+/* faixa do ?guide=1 no alto do card */
+.guia {
+  margin-bottom: var(--s-4);
+}
+
+/* ---------- topo: rótulo + X ---------- */
+
+.topo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-2);
+  margin-bottom: var(--s-4);
+}
+
+.eyebrow {
+  color: var(--c-graphite);
+}
+
+.fechar {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: var(--tour-chip-h);
+  height: var(--tour-chip-h);
+  /* o ícone alinha com a margem do card, o alvo de toque sobra para fora */
+  margin: calc((var(--tour-chip-h) - var(--s-3)) / -2);
+  border-radius: var(--r-chip);
+  transition: background-color var(--dur-fast) var(--ease);
+}
+
+.fechar svg {
+  width: var(--s-3);
+  height: var(--s-3);
+}
+
+.fechar:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 var(--focus-ring) var(--c-focus-dark);
+}
+
+/* ---------- páginas ---------- */
+
+.corpo {
+  overflow: hidden;
+  /* o anel de foco dos chips não é cortado pelo overflow */
+  margin: calc(var(--focus-ring) * -1);
+}
+
+.corpo > div {
+  padding: var(--focus-ring);
+}
+
+.pagina {
+  display: flex;
+  flex-direction: column;
+  gap: var(--tour-gap);
+}
+
+.grupo {
+  min-width: 0;
+  padding: 0;
+  border: 0;
+}
+
+.pergunta {
+  padding: 0;
+  margin-bottom: var(--s-3);
+  text-wrap: balance;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-1);
+}
+
+.chip {
+  position: relative;
+  cursor: pointer;
+}
+
+/* o rádio fica por cima, invisível: clique, teclado e leitor de tela continuam nativos */
+.chip input {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.chip span {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--tour-chip-h);
+  padding: 0 var(--s-3);
+  border: 1px solid var(--c-ink);
+  border-radius: var(--r-chip);
+  white-space: nowrap;
+  transition:
+    background-color var(--dur-fast) var(--ease),
+    color var(--dur-fast) var(--ease);
+}
+
+.chip input:checked + span {
+  background: var(--c-ink);
+  color: var(--c-white);
+}
+
+.chip input:focus-visible + span {
+  box-shadow: 0 0 0 var(--focus-ring) var(--c-focus-dark);
+}
+
+/* ---------- slider de convidados ---------- */
+
+/* range nativo: área de toque de 44px, trilho de 4px preenchido até o centro do puxador */
+.range {
+  --fill: calc(var(--tour-puxador) / 2 + (100% - var(--tour-puxador)) * var(--p));
+  display: block;
+  width: 100%;
+  height: var(--tour-chip-h);
+  margin: 0;
+  background: transparent;
+  cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
+  touch-action: pan-y;
+}
+
+.range:focus-visible {
+  outline: none;
+}
+
+.range::-webkit-slider-runnable-track {
+  height: var(--tour-trilho-h);
+  border-radius: var(--tour-trilho-h);
+  background: linear-gradient(to right, var(--c-ink) 0 var(--fill), var(--c-trilho) var(--fill) 100%);
+}
+
+.range::-webkit-slider-thumb {
+  box-sizing: border-box;
+  width: var(--tour-puxador);
+  height: var(--tour-puxador);
+  margin-top: calc((var(--tour-trilho-h) - var(--tour-puxador)) / 2);
+  border: var(--bw-btn) solid var(--c-ink);
+  border-radius: var(--r-chip);
+  background: var(--c-white);
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.range::-moz-range-track {
+  height: var(--tour-trilho-h);
+  border-radius: var(--tour-trilho-h);
+  background: var(--c-trilho);
+}
+
+.range::-moz-range-progress {
+  height: var(--tour-trilho-h);
+  border-radius: var(--tour-trilho-h);
+  background: var(--c-ink);
+}
+
+.range::-moz-range-thumb {
+  box-sizing: border-box;
+  width: var(--tour-puxador);
+  height: var(--tour-puxador);
+  border: var(--bw-btn) solid var(--c-ink);
+  border-radius: var(--r-chip);
+  background: var(--c-white);
+}
+
+.range:focus-visible::-webkit-slider-thumb {
+  box-shadow: 0 0 0 var(--focus-ring) var(--c-focus-dark);
+}
+
+.range:focus-visible::-moz-range-thumb {
+  box-shadow: 0 0 0 var(--focus-ring) var(--c-focus-dark);
+}
+
+/* sem resposta: trilho vazio e puxador apagado no início */
+[data-vazio] .range {
+  --fill: 0px;
+}
+
+[data-vazio] .range::-webkit-slider-thumb {
+  border-color: var(--c-stone);
+}
+
+[data-vazio] .range::-moz-range-thumb {
+  border-color: var(--c-stone);
+}
+
+[data-vazio] .range::-moz-range-progress {
+  background: transparent;
+}
+
+/* marcas e rótulos: de centro a centro do puxador (recuo de meio puxador nas pontas) */
+.marcas {
+  position: relative;
+  height: calc(var(--tour-marca-h) + var(--s-1) + var(--t-button-s) * 1.4);
+  margin: calc(var(--s-1) * -1) calc(var(--tour-puxador) / 2) 0;
+}
+
+.marca {
+  position: absolute;
+  top: 0;
+  left: calc(var(--i) * 100%);
+  width: 1px;
+  height: var(--tour-marca-h);
+  background: var(--c-stone);
+}
+
+.rotuloFaixa {
+  position: absolute;
+  top: calc(var(--tour-marca-h) + var(--s-0));
+  left: calc(var(--i) * 100%);
+  padding: var(--s-0) 0;
+  color: var(--c-graphite);
+  white-space: nowrap;
+  transform: translateX(-50%);
+  transition: color var(--dur-fast) var(--ease);
+}
+
+/* nas pontas o rótulo alinha com a borda do trilho, não com o centro do puxador */
+.rotuloFaixa[data-ponta="inicio"] {
+  transform: translateX(calc(var(--tour-puxador) / -2));
+}
+
+.rotuloFaixa[data-ponta="fim"] {
+  transform: translateX(calc(-100% + var(--tour-puxador) / 2));
+}
+
+.rotuloFaixa[data-ativa] {
+  color: var(--c-ink);
+  font-weight: var(--w-display);
+}
+
+/* ---------- página 2: contato ---------- */
+
+.cabeca .pergunta {
+  margin-bottom: 0;
+}
+
+.voltar {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-0);
+  min-height: var(--tour-chip-h);
+  margin-top: calc(var(--s-2) * -1);
+  color: var(--c-graphite);
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  text-underline-offset: 0.3em;
+  transition: text-decoration-color var(--dur-fast) var(--ease);
+}
+
+.voltar:focus-visible {
+  outline: none;
+  text-decoration-color: currentColor;
+}
+
+.campos {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-4);
+}
+
+.campo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-1);
+}
+
+.rotulo {
+  color: var(--c-graphite);
+}
+
+.input {
+  width: 100%;
+  min-height: var(--tour-chip-h);
+  padding: var(--s-0) 0;
+  border: 0;
+  border-bottom: 1px solid var(--c-ink);
+  border-radius: 0;
+  background: transparent;
+  /* nunca menor que 16px: o iOS não dá zoom ao focar */
+  font-size: max(var(--t-input-min), var(--t-body));
+  line-height: var(--lh-body);
+  color: var(--c-ink);
+}
+
+/* SmoothInput: o cursor desenhado mede em em, na mesma fonte do campo */
+.inputRaiz {
+  font-size: max(var(--t-input-min), var(--t-body));
+}
+
+.input:focus-visible {
+  outline: none;
+  border-bottom-width: var(--underline-h-bold);
+}
+
+.input[aria-invalid] {
+  border-bottom-width: var(--underline-h-bold);
+}
+
+.erro {
+  font-size: var(--t-button-s);
+  line-height: var(--lh-body);
+  color: var(--c-ink);
+}
+
+.erro:empty {
+  display: none;
+}
+
+/* ---------- página 3: obrigado ---------- */
+
+.obrigado {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-3);
+}
+
+.obrigadoTexto {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-3);
+}
+
+.titulo {
+  text-wrap: balance;
+}
+
+.titulo:focus {
+  outline: none;
+}
+
+.resumo {
+  color: var(--c-graphite);
+}
+
+.texto {
+  color: var(--c-graphite);
+}
+
+.link {
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+  white-space: nowrap;
+}
+
+.acoes {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--s-2);
+}
+
+.acoes .voltar {
+  margin-top: 0;
+}
+
+/* ---------- barra de status na base da coluna do formulário ---------- */
+
+/* solta dentro da coluna (alinhada ao conteúdo, pontas arredondadas): com os cantos
+   arredondados do card, uma linha colada na borda ficaria cortada nas curvas */
+.barra {
+  position: absolute;
+  right: var(--tour-pad);
+  bottom: calc(var(--tour-pad) / 2);
+  left: var(--tour-pad);
+  height: var(--tour-barra-h);
+  overflow: hidden;
+  border-radius: var(--tour-barra-h);
+  background: var(--c-grid-line);
+}
+
+.barraCheia {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--c-ink);
+  transform-origin: left center;
+}
+
+/* ---------- foto ao lado (só de 768px para cima) ---------- */
+
+.foto {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  /* mais vertical que horizontal: 880 x 600 no desktop, foto em retrato */
+  .card[data-foto] {
+    flex-direction: row;
+    width: min(var(--tour-w-foto), 100%);
+    min-height: min(var(--tour-h-foto), 100dvh - 2 * var(--tour-margem));
+  }
+
+  .card[data-foto] .coluna {
+    flex: 0 1 var(--tour-w-form-foto);
+  }
+
+  /* sobrando altura, as perguntas ficam no meio; topo (rótulo + X) no alto, barra na base */
+  .card[data-foto] .rolagem {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
+  }
+
+  .card[data-foto] .corpo {
+    margin-block: auto;
+  }
+
+  /* à esquerda (no DOM vem depois do formulário: leitura e Tab começam nele), recuada dentro do
+     card com a moldura de papel em volta; acompanha a altura do formulário (flex estica) */
+  .foto {
+    position: relative;
+    display: block;
+    order: -1;
+    flex: 1 1 0;
+    min-width: var(--tour-foto-min);
+    margin: var(--tour-foto-inset) 0 var(--tour-foto-inset) var(--tour-foto-inset);
+    overflow: hidden;
+    border-radius: var(--tour-foto-r);
+    background: var(--c-ink);
+  }
+
+  /* fotos do loop empilhadas: a ativa aparece em crossfade com o seu título */
+  /* camadas explícitas: slides (0) < scrim da base (1) < tracinhos (2); sem isso, a foto que
+     acabou de entrar em fade podia ser pintada por cima do scrim da base */
+  .slide {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    isolation: isolate;
+    opacity: 0;
+    transition: opacity var(--tour-foto-fade) var(--ease);
+  }
+
+  .slide[data-ativa] {
+    opacity: 1;
+  }
+
+  .slide .fotoMedia {
+    position: absolute;
+    inset: 0;
+  }
+
+  /* scrim no alto, forte atrás do título (luz de lustre, céu) e sumindo até o meio da foto */
+  .slide::after {
+    content: "";
+    position: absolute;
+    inset: 0 0 auto;
+    height: var(--tour-scrim-h);
+    background: linear-gradient(to bottom, var(--c-scrim) 0, var(--c-scrim) 40%, var(--c-scrim-mid) 70%, var(--c-scrim-0));
+    pointer-events: none;
+  }
+
+  /* base escura atrás dos tracinhos (fotos com base clara e movimentada, ex.: salão cheio) */
+  .foto::after {
+    content: "";
+    position: absolute;
+    inset: auto 0 0;
+    height: var(--tour-scrim-base-h);
+    z-index: 1;
+    background: linear-gradient(to top, var(--c-scrim) 0, var(--c-scrim-mid) 40%, var(--c-scrim-0));
+    pointer-events: none;
+  }
+
+  .fotoTitulo {
+    position: absolute;
+    inset: 0 0 auto;
+    z-index: 1;
+    transform: translateY(var(--s-1));
+    transition: transform var(--tour-foto-fade) var(--ease);
+    padding: var(--tour-pad);
+    font-size: var(--t-tour-foto);
+    line-height: var(--lh-tour-foto);
+    font-weight: var(--w-display);
+    color: var(--c-white);
+    text-wrap: balance;
+  }
+
+  .slide[data-ativa] .fotoTitulo {
+    transform: none;
+  }
+
+  /* tracinhos do loop: curtos e apagados; o da foto na tela, longo e branco */
+  .tracos {
+    position: absolute;
+    bottom: var(--tour-pad);
+    left: var(--tour-pad);
+    z-index: 2;
+    display: flex;
+    gap: var(--tour-traco-gap);
+  }
+
+  .traco {
+    width: var(--tour-traco-w);
+    height: var(--tour-barra-h);
+    border-radius: var(--tour-barra-h);
+    background: var(--c-traco);
+    transition:
+      width var(--dur-fast) var(--ease),
+      background-color var(--dur-fast) var(--ease);
+  }
+
+  .traco[data-ativa] {
+    width: var(--tour-traco-ativo-w);
+    background: var(--c-white);
+  }
+
+  /* template: o placeholder de instrução é longo; no corpo de texto ele cabe na coluna */
+  .fotoTitulo[data-placeholder] {
+    font-size: var(--t-body);
+    line-height: var(--lh-body);
+    font-weight: 400;
+  }
+}
+
+@media (hover: hover) {
+  .fechar:hover {
+    background: var(--c-hover);
+  }
+
+  .chip:hover input:not(:checked) + span {
+    background: var(--c-hover);
+  }
+
+  .voltar:hover {
+    text-decoration-color: currentColor;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .chip span,
+  .fechar,
+  .voltar,
+  .slide,
+  .fotoTitulo,
+  .traco {
+    transition: none;
+  }
+}
+
+/* ---------- surgimento: ao abrir e a cada página, os itens (data-surge, índice em --surge-i)
+   entram em sequência com fade + leve subida; a página nova monta de novo, então repete ---------- */
+@keyframes surge {
+  from {
+    opacity: 0;
+    transform: translateY(var(--surge-card-sobe));
+  }
+}
+
+.card [data-surge] {
+  animation: surge var(--surge-card-dur) var(--ease) both;
+  animation-delay: calc(var(--surge-i, 0) * var(--surge-card-stagger));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card [data-surge] {
+    animation: none;
+  }
+}
+
+/* celebração da página 3 (Celebracao.tsx): canvas na tela inteira, antes do card no DOM —
+   fica acima do fundo escurecido e atrás do card; não pega cliques */
+.celebracao {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}

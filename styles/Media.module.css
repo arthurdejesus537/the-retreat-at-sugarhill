@@ -1,0 +1,26 @@
+.media {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--r-media);
+}
+
+.image {
+  object-fit: cover;
+}
+
+.placeholder {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  /* o container pode mover o rótulo quando há texto por cima (--placeholder-align) */
+  place-items: var(--placeholder-align, center);
+  padding: var(--placeholder-pad, var(--s-4));
+}
+
+.light {
+  background: var(--c-line);
+}
+
+.dark {
+  background: var(--c-graphite);
+}

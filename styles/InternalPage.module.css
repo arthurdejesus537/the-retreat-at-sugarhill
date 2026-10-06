@@ -1,0 +1,225 @@
+/* Página interna (The Venue, Packages, Stay) — ritmo medido na página About de montamont.com
+   (2026-09-27): hero 100vh com H1 centralizado · breadcrumb 2.4rem abaixo (1.6rem no celular) ·
+   subtítulo --t-lead 6.4rem abaixo · 9.6rem até a apresentação · 16rem entre os módulos
+   seguintes (.stack-sections). */
+
+/* ---------- hero ---------- */
+.hero {
+  position: relative;
+  height: calc(100svh - var(--announce-offset));
+  color: var(--c-white);
+}
+
+@media (min-width: 992px) {
+  .hero {
+    height: calc(100vh - var(--announce-offset));
+  }
+}
+
+.heroMedia {
+  position: absolute;
+  inset: 0;
+}
+
+/* scrim: topo escuro para o header, meio escurecido para o H1 branco (contraste ≥ 4.5:1) */
+.heroMedia::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(to bottom, var(--c-scrim) 0, var(--c-scrim-mid) var(--scrim-top-h), var(--c-scrim-mid) 100%);
+}
+
+.heroImage {
+  object-fit: cover;
+}
+
+.heroPlaceholder {
+  --placeholder-align: start end;
+  height: 100%;
+  padding: var(--hero-placeholder-pad);
+}
+
+.title {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 2;
+  width: var(--hero-title-w);
+  translate: -50% -50%;
+  text-align: center;
+  text-wrap: balance;
+}
+
+/* entrada do título (EntradaTitulo): escondido na 1ª pintura quando o script do <head>
+   marcou data-entrada="on"; o 1º quadro do Framer é este mesmo estado */
+.entrada {
+  display: block;
+}
+
+:global(html[data-entrada="on"]) .entrada {
+  transform: translateY(100%);
+  clip-path: inset(-20% -10% 100% -10%);
+}
+
+/* ---------- breadcrumb + subtítulo ---------- */
+.intro {
+  margin-bottom: var(--manifesto-bottom);
+}
+
+.breadcrumb {
+  margin-top: var(--s-5);
+}
+
+.breadcrumb ol {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-1);
+}
+
+.breadcrumb li + li::before {
+  content: "/";
+  margin-right: var(--s-1);
+}
+
+.breadcrumb [aria-current] {
+  color: var(--c-ink);
+}
+
+@media (hover: hover) {
+  .crumbLink {
+    transition: color var(--dur-fast) var(--ease);
+  }
+
+  .crumbLink:hover {
+    color: var(--c-ink);
+  }
+}
+
+.subtitle {
+  margin-top: var(--manifesto-top);
+  text-wrap: pretty;
+}
+
+/* ---------- apresentação ---------- */
+.about {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: var(--col-gap);
+}
+
+.aboutHead {
+  grid-column: 1 / span 5;
+}
+
+.aboutHead > p {
+  margin-bottom: var(--s-2);
+}
+
+.aboutHead h2 {
+  text-wrap: balance;
+}
+
+/* texto corrido do modelo (18px) → --t-footer-link, o corpo grande do sistema */
+.aboutText {
+  grid-column: 7 / -1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-4);
+  font-size: var(--t-footer-link);
+  line-height: var(--lh-footer-link);
+  letter-spacing: var(--ls-footer-link);
+  color: var(--c-text);
+  text-wrap: pretty;
+}
+
+/* ---------- 3 legendas (sem foto): mono em caixa normal, como a legenda do modelo ---------- */
+.captions {
+  margin-top: var(--s-8);
+}
+
+.captionList {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--col-gap);
+}
+
+.caption {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-2);
+  padding-top: var(--s-3);
+  border-top: 1px solid var(--c-ink);
+  font-family: var(--f-mono);
+  font-size: var(--t-meta);
+  line-height: var(--lh-meta-hero);
+  color: var(--c-graphite);
+  text-wrap: pretty;
+}
+
+.captionNumber {
+  color: var(--c-stone);
+}
+
+/* ---------- prova social ---------- */
+.proof {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: var(--col-gap);
+  align-items: start;
+}
+
+.press {
+  grid-column: 1 / span 5;
+}
+
+.pressList {
+  margin-top: var(--stack-title);
+  border-top: 1px solid var(--c-ink);
+}
+
+.pressItem {
+  padding-block: var(--s-4);
+  border-bottom: 1px solid var(--c-line);
+}
+
+.quote {
+  grid-column: 7 / -1;
+}
+
+.press + .quote {
+  margin-top: calc(var(--t-display) * var(--lh-display) + var(--stack-title));
+}
+
+.quoteText {
+  margin-bottom: var(--s-4);
+  font-family: var(--f-serif);
+  font-size: var(--t-lead);
+  line-height: var(--lh-lead);
+  text-wrap: pretty;
+}
+
+/* ---------- abaixo de 992px: uma coluna ---------- */
+@media (max-width: 991.98px) {
+  .breadcrumb {
+    margin-top: var(--s-3);
+  }
+
+  .about,
+  .proof {
+    display: block;
+  }
+
+  .aboutHead {
+    margin-bottom: var(--s-6);
+  }
+
+  .captionList {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--s-5);
+  }
+
+  .press + .quote {
+    margin-top: var(--s-8);
+  }
+}

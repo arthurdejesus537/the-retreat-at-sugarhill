@@ -1,0 +1,71 @@
+/* Stay On Site — Alpine Destinations do modelo (.destinations-row): título + 2 cards grandes
+   + carrosséis de cards menores por grupo. */
+
+.head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: var(--col-gap);
+  margin-bottom: var(--stack-title);
+}
+
+.title {
+  max-width: calc(100% * 7 / 12);
+  text-wrap: balance;
+}
+
+.text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--s-3);
+  max-width: var(--stays-head-w);
+}
+
+.large {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--col-gap);
+}
+
+.group {
+  margin-top: var(--s-7);
+}
+
+/* página Stay: todos os cards menores à vista, 4 por linha (2 no celular) */
+.groupTitle {
+  margin-bottom: var(--s-5);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--s-7) var(--col-gap);
+}
+
+@media (max-width: 991.98px) {
+  .grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 767.98px) {
+  .head {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .title {
+    max-width: none;
+  }
+
+  .large {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--s-6);
+  }
+
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--s-6) var(--col-gap);
+  }
+}

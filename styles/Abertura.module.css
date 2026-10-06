@@ -1,0 +1,78 @@
+/* Abertura "A Janela" da home (VENUE-TEMPLATE §2). Tudo depende do data-abertura que o script
+   do <head> põe no <html> antes da 1ª pintura: "on" (papel com o nome e a janela) e "texto"
+   (entrada do texto do hero). Sem ele (2ª visita, reduzir movimento, sem JS) o papel não existe
+   e o hero aparece como sempre. */
+
+.cortina {
+  display: none;
+}
+
+:global(html[data-abertura]) {
+  overflow: hidden;
+}
+
+:global(html[data-abertura="on"]) .cortina {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-abertura);
+  display: grid;
+  place-items: center;
+  background: var(--c-paper);
+  color: var(--c-ink);
+}
+
+/* a mídia do hero fica acima do papel e começa recortada a nada; o Abertura.tsx abre o recorte
+   (a janela) e o leva até o tamanho do hero */
+:global(html[data-abertura="on"] [data-hero-midia]) {
+  z-index: calc(var(--z-abertura) + 1);
+  clip-path: inset(50%);
+}
+
+/* header e faixa de anúncio: sem a transição de esconder ao rolar, que atrasaria a descida */
+:global(html[data-abertura] [data-entra="header"]) {
+  transition: none;
+}
+
+/* nome grande na serif, as duas partes encostadas (um espaço entre elas) */
+.nome {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--abertura-nome-gap);
+  margin: 0;
+  font-family: var(--f-serif);
+  font-weight: 400;
+  font-size: var(--t-abertura-nome);
+  line-height: var(--lh-abertura-nome);
+  letter-spacing: var(--ls-abertura-nome);
+  white-space: nowrap;
+}
+
+.parte {
+  display: block;
+  will-change: transform;
+}
+
+/* molde da janela: não ocupa lugar nem aparece; o Abertura.tsx mede o tamanho (altura
+   --abertura-janela-h, proporção 4:5) e a margem (folga entre a janela e as palavras) */
+.janela {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  height: var(--abertura-janela-h);
+  aspect-ratio: var(--abertura-janela-ratio);
+  margin: var(--abertura-folga);
+  visibility: hidden;
+  pointer-events: none;
+}
+
+/* celular: nome empilhado, a janela abre entre as duas linhas */
+@media (max-width: 767.98px) {
+  .nome {
+    flex-direction: column;
+  }
+}
+
+/* O que entra depois (data-entra) não é escondido aqui: fica pintado embaixo do papel, que é
+   opaco, e o Abertura.tsx põe o 1º quadro no instante em que o papel sai. Assim o H1 conta para
+   o LCP na 1ª pintura, como sem a abertura. */

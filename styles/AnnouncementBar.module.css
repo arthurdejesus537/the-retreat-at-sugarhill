@@ -1,0 +1,46 @@
+/* Announcement bar (VENUE-TEMPLATE §4, seção 0): 36–40px, --c-signal, mono uppercase, link à direita. */
+
+.bar {
+  position: relative;
+  z-index: calc(var(--z-header) + 1);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-4);
+  min-height: var(--announce-h);
+  padding: var(--s-1) var(--gutter);
+  background: var(--c-signal);
+  color: var(--c-ink);
+}
+
+.bar .text,
+.bar .link {
+  color: var(--c-ink);
+  line-height: var(--lh-meta-hero);
+}
+
+.link {
+  flex-shrink: 0;
+  text-decoration: underline;
+  text-underline-offset: 0.3em;
+  text-decoration-thickness: 1px;
+}
+
+@media (hover: hover) {
+  .link {
+    transition: opacity var(--dur-fast) var(--ease);
+  }
+
+  .link:hover {
+    opacity: var(--text-dim-hover);
+  }
+}
+
+/* mobile: o link vai para baixo do texto, alinhado à esquerda */
+@media (max-width: 767.98px) {
+  .bar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--s-0);
+  }
+}

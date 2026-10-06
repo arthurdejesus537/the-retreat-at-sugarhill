@@ -1,0 +1,28 @@
+/* TypeText: texto digitado letra a letra por cima do texto inteiro (invisível, reserva o espaço). */
+
+.wrap {
+  position: relative;
+  display: inline-block;
+}
+
+.ghost {
+  visibility: hidden;
+}
+
+.typed {
+  position: absolute;
+  inset: 0;
+  white-space: pre;
+}
+
+/* cursor de máquina: sublinhado piscando, na cor do texto */
+.cursor::after {
+  content: "_";
+  animation: piscar var(--dur) steps(1) infinite;
+}
+
+@keyframes piscar {
+  50% {
+    opacity: 0;
+  }
+}

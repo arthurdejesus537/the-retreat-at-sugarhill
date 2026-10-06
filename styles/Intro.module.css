@@ -1,0 +1,22 @@
+/* Intro / Story — Manifesto do modelo (page-hero__intro-text), em ~8 de 12 colunas (VENUE-TEMPLATE §4). */
+
+.intro {
+  margin-top: var(--manifesto-top);
+  margin-bottom: var(--manifesto-bottom);
+}
+
+.text {
+  max-width: calc(100% * 8 / 12);
+  text-wrap: pretty;
+}
+
+.link {
+  display: flex; /* sem strut do body: a altura é a do link (2.16rem), como no original */
+  margin-top: var(--s-5);
+}
+
+@media (max-width: 991.98px) {
+  .text {
+    max-width: none;
+  }
+}

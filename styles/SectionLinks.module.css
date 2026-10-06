@@ -1,0 +1,21 @@
+/* "Ver mais" de seção: no desktop fica no cabeçalho; abaixo de 992px vai para o fim da seção, centralizado. */
+
+.desktop {
+  display: contents;
+}
+
+.mobile {
+  display: none;
+}
+
+@media (max-width: 991.98px) {
+  .desktop {
+    display: none;
+  }
+
+  .mobile {
+    display: flex;
+    justify-content: center;
+    margin-top: var(--section-link-top);
+  }
+}

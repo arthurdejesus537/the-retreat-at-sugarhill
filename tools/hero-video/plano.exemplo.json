@@ -1,0 +1,28 @@
+[
+  {
+    "clip": "01-cerimonia-entardecer",
+    "fonte": "src/cerimonia.jpg",
+    "animacao": "Golden hour at the ceremony site: the trees sway gently, soft light flickers through the leaves, very slow camera push-in. Photorealistic, no people, no new objects, the structure stays exactly the same.",
+    "aplicar_look": true,
+    "desktop": { "modo": "corte", "caixa": [0, 200, 1920, 1280] },
+    "mobile": {
+      "modo": "ia-expand",
+      "base": "mobile/01-cerimonia-entardecer-base.jpg",
+      "caixa_base": [480, 0, 1440, 1280],
+      "bria": {
+        "canvas_size": [960, 1707],
+        "original_image_size": [960, 1280],
+        "original_image_location": [0, 427]
+      },
+      "prompt": "natural continuation of the same sky, same light and colors"
+    },
+    "nota": "Foto ancorada embaixo: a IA só estende o céu."
+  },
+  {
+    "clip": "02-recepcao-noite",
+    "fonte": "reception-at-night.jpg",
+    "animacao": "Evening reception, string lights glow and twinkle softly, guests move naturally and subtly, static camera. Photorealistic, no new people or objects.",
+    "desktop": { "modo": "corte", "caixa": [0, 141, 1920, 1221] },
+    "mobile": { "modo": "corte", "caixa": [768, 0, 1487, 1278] }
+  }
+]

@@ -1,0 +1,93 @@
+/* Página Packages — oferta em destaque, adicionais com preço e o que não está incluído. */
+
+/* oferta: o amarelo do selo, no único bloco da página que pede urgência */
+.offer {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: var(--s-6);
+  padding: var(--s-6);
+  background: var(--c-signal);
+  color: var(--c-ink);
+}
+
+.offerLabel {
+  margin-bottom: var(--s-3);
+  color: var(--c-ink);
+}
+
+.offerText {
+  max-width: calc(100% * 8 / 12);
+  text-wrap: balance;
+}
+
+.offerDate {
+  margin-top: var(--s-3);
+  color: var(--c-graphite);
+}
+
+/* adicionais (7 colunas) + não incluso (4 colunas) */
+.details {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: var(--col-gap);
+  align-items: start;
+}
+
+.addons {
+  grid-column: 1 / span 7;
+}
+
+.excluded {
+  grid-column: 9 / -1;
+}
+
+.heading {
+  margin-bottom: var(--s-4);
+}
+
+.rows {
+  border-top: 1px solid var(--c-ink);
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--s-4);
+  padding-block: var(--s-2);
+  border-bottom: 1px solid var(--c-line);
+}
+
+/* preço em mono, como nos cards */
+.price {
+  flex-shrink: 0;
+  max-width: 50%;
+  font-family: var(--f-mono);
+  font-size: var(--t-meta-hero);
+  line-height: var(--lh-meta-hero);
+  letter-spacing: var(--ls-meta-hero);
+  text-align: right;
+  text-transform: uppercase;
+}
+
+/* ---------- abaixo de 992px: uma coluna ---------- */
+@media (max-width: 991.98px) {
+  .offer {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: var(--s-5);
+  }
+
+  .offerText {
+    max-width: none;
+  }
+
+  .details {
+    display: block;
+  }
+
+  .excluded {
+    margin-top: var(--s-8);
+  }
+}

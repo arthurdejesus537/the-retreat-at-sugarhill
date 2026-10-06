@@ -1,0 +1,148 @@
+/* Packages — Shop grid do modelo (.products-row): título + grade de até 4 cards. */
+
+.head {
+  margin-bottom: var(--stack-title);
+}
+
+.title {
+  max-width: calc(100% * 8 / 12);
+  text-wrap: balance;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(var(--cols, 4), minmax(0, 1fr));
+  gap: var(--col-gap);
+}
+
+/* adicionais abaixo da grade: resumo + acordeão com a lista completa */
+.addons {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--s-2);
+  margin-top: var(--s-7);
+}
+
+.addonsLabel {
+  font-weight: var(--w-display);
+}
+
+.addonsDetails {
+  width: 100%;
+  interpolate-size: allow-keywords;
+}
+
+.addonsSummary {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-1);
+  text-decoration: underline;
+  text-underline-offset: 0.3em;
+  text-decoration-thickness: var(--underline-h);
+  cursor: pointer;
+  list-style: none;
+}
+
+.addonsSummary::-webkit-details-marker {
+  display: none;
+}
+
+.addonsIcon {
+  display: inline-flex;
+  font-size: var(--carousel-arrow);
+  transition: transform var(--dur-fast) var(--ease);
+}
+
+.addonsDetails[open] .addonsIcon {
+  transform: scaleY(-1);
+}
+
+.addonsDetails::details-content {
+  block-size: 0;
+  overflow: hidden;
+  transition:
+    block-size var(--dur-fast) var(--ease),
+    content-visibility var(--dur-fast) allow-discrete;
+}
+
+.addonsDetails[open]::details-content {
+  block-size: auto;
+}
+
+.addonsList {
+  max-width: calc(100% * 6 / 12);
+  margin-top: var(--s-3);
+  border-top: 1px solid var(--c-line);
+}
+
+.addonsItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--s-4);
+  padding-block: var(--s-1);
+  border-bottom: 1px solid var(--c-line);
+}
+
+/* preço em mono, como o dos cards */
+.addonsPrice {
+  flex-shrink: 0;
+  font-family: var(--f-mono);
+  font-size: var(--t-meta-hero);
+  letter-spacing: var(--ls-meta-hero);
+  text-transform: uppercase;
+}
+
+/* link para a página Packages */
+.more {
+  display: flex;
+  margin-top: var(--s-7);
+}
+
+.addons + .more {
+  margin-top: var(--s-5);
+}
+
+/* ---------- abaixo de 992px ---------- */
+@media (max-width: 991.98px) {
+  .title,
+  .addonsList {
+    max-width: none;
+  }
+
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--s-7) var(--col-gap);
+  }
+}
+
+/* celular: faixa horizontal com scroll-snap, como a lista do The Spaces */
+@media (max-width: 767.98px) {
+  .grid {
+    display: flex;
+    gap: var(--col-gap);
+    margin-inline: calc(-1 * var(--gutter));
+    padding-inline: var(--gutter);
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: var(--gutter);
+    scrollbar-width: none;
+  }
+
+  .grid::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* padding-right de flex com overflow não entra no scroll */
+  .grid::after {
+    content: "";
+    flex: 0 0 max(0px, calc(var(--gutter) - var(--col-gap)));
+  }
+
+  .grid > * {
+    flex: 0 0 var(--stay-card-w-m);
+    scroll-snap-align: start;
+  }
+}

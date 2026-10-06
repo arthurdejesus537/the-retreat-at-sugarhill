@@ -1,0 +1,45 @@
+/* Sublinhado animado — multianimline do original (SITE-MESTRE.md §8). */
+
+.link {
+  display: inline-block;
+  width: max-content;
+  font-feature-settings: "case", "ordn", "dlig";
+  background-repeat: no-repeat;
+}
+
+/* traço, vazio, traço: o background de 300% desliza e troca o traço visível */
+.swap {
+  background-image: linear-gradient(
+    90deg,
+    currentColor 0,
+    currentColor 33%,
+    transparent 33.0001%,
+    transparent 66%,
+    currentColor 66.0001%,
+    currentColor 100%
+  );
+  background-size: 300% var(--underline-h);
+  background-position: 100% 100%;
+  transition: background-position var(--dur) var(--ease);
+}
+
+/* em repouso a metade colorida fica à direita com tamanho 0 (recolhe para a direita);
+   no hover a metade colorida vira para a esquerda e cresce a partir dela */
+.single {
+  background-image: linear-gradient(90deg, transparent 0, transparent 50%, currentColor 50.00001%, currentColor 100%);
+  background-size: 0 var(--underline-h-bold);
+  background-position: 100% 90%;
+  transition: background-size var(--dur) var(--ease);
+}
+
+@media (hover: hover) {
+  .swap:hover {
+    background-position: 0 100%;
+  }
+
+  .single:hover {
+    background-image: linear-gradient(270deg, transparent 0, transparent 50%, currentColor 50.00001%, currentColor 100%);
+    background-size: 200% var(--underline-h-bold);
+    background-position: 0 90%;
+  }
+}

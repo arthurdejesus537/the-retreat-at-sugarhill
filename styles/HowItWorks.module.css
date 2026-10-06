@@ -1,0 +1,88 @@
+/* How It Works — banner "Passes" do modelo (.large-preview): foto full-bleed, rótulo no alto
+   e, no lugar do vídeo central, um card claro com os 3 passos. */
+
+.banner {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-height: var(--large-h);
+  padding: var(--s-9) var(--gutter);
+  color: var(--c-white);
+}
+
+.banner .background {
+  --placeholder-align: end end;
+  position: absolute;
+  inset: 0;
+}
+
+/* scrim do topo: o rótulo branco fica legível sobre qualquer foto */
+.banner::after {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: var(--scrim-top-h);
+  pointer-events: none;
+  background: linear-gradient(to bottom, var(--c-scrim) 0, var(--c-scrim-0) 100%);
+}
+
+.category {
+  position: absolute;
+  z-index: 1;
+  top: var(--large-label-top);
+  left: 50%;
+  translate: -50% 0;
+}
+
+.banner .category {
+  color: var(--c-white);
+}
+
+.card {
+  position: relative;
+  z-index: 1;
+  width: var(--large-inset-w);
+  max-width: 100%;
+  padding: var(--s-6);
+  background: var(--c-paper);
+  color: var(--c-ink);
+}
+
+.title {
+  margin-bottom: var(--s-5);
+  text-wrap: balance;
+}
+
+.steps {
+  margin-bottom: var(--s-6);
+  border-top: 1px solid var(--c-line);
+}
+
+.step {
+  display: grid;
+  grid-template-columns: var(--s-7) minmax(0, 1fr);
+  align-items: baseline;
+  padding-block: var(--s-3);
+  border-bottom: 1px solid var(--c-line);
+}
+
+.card .number {
+  color: var(--c-ink);
+}
+
+.text {
+  text-wrap: pretty;
+}
+
+/* ---------- abaixo de 992px ---------- */
+@media (max-width: 991.98px) {
+  .banner {
+    min-height: 100vh;
+    padding-block: var(--s-8);
+  }
+
+  .card {
+    width: 100%;
+    padding: var(--s-5);
+  }
+}

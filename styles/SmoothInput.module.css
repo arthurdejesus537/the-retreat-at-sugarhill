@@ -1,0 +1,33 @@
+/* SmoothInput — cursor com mola (adaptado de Skiper UI, skiper106). Campo e cursor na mesma
+   célula do grid; o cursor nativo fica transparente e o desenhado desliza por cima. */
+
+.raiz {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.raiz > * {
+  grid-area: 1 / 1;
+}
+
+.campo {
+  caret-color: transparent;
+}
+
+.medida {
+  position: absolute;
+  top: 0;
+  left: 0;
+  visibility: hidden;
+  white-space: pre;
+  pointer-events: none;
+}
+
+.cursor {
+  align-self: center;
+  width: var(--caret-w);
+  height: var(--caret-h);
+  background: var(--c-ink);
+  pointer-events: none;
+}

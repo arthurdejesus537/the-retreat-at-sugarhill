@@ -1,0 +1,27 @@
+/* SurgeLinhas — linhas sobem com fade ao entrar na tela (tokens --surge-*). data-surge vem do JS:
+   "espera" esconde, "entra" anima; sem ele o texto fica visível. */
+
+.palavra {
+  display: inline-block;
+}
+
+.raiz[data-surge] .palavra {
+  transition:
+    opacity var(--surge-dur) var(--ease),
+    transform var(--surge-dur) var(--ease);
+  transition-delay: calc(var(--linha, 0) * var(--surge-stagger));
+}
+
+.raiz[data-surge="espera"] .palavra {
+  opacity: 0;
+  transform: translateY(var(--surge-sobe));
+  transition: none; /* esconde sem animar */
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .raiz[data-surge] .palavra {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}

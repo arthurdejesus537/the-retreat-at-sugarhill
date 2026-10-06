@@ -1,0 +1,38 @@
+/* Mobile sticky bar (VENUE-TEMPLATE §4): só abaixo de 768px, entra de baixo depois do hero. */
+
+.bar {
+  display: none;
+}
+
+@media (max-width: 767.98px) {
+  .bar {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: var(--z-header);
+    display: grid;
+    /* CTA primário mais largo que o Text Us */
+    grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+    gap: var(--s-1);
+    padding: var(--s-2) var(--gutter) calc(var(--s-2) + env(safe-area-inset-bottom));
+    background: var(--c-paper);
+    border-top: 1px solid var(--c-line);
+    transform: translateY(100%);
+    transition: transform var(--dur-fast) var(--ease);
+  }
+
+  .bar .button {
+    padding-inline: var(--s-2);
+  }
+
+  .bar[data-visible] {
+    transform: none;
+  }
+
+  /* faixa do modo guia logo acima da barra */
+  .bar .guide {
+    top: auto;
+    bottom: 100%;
+  }
+}

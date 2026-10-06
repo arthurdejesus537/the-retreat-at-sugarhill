@@ -1,0 +1,230 @@
+/*
+ * base.css — reset, elementos globais e utilitários de texto/layout.
+ * Só consome tokens de styles/tokens.css. Ver SITE-MESTRE.md §3–§4.
+ */
+
+/* ---------- reset ---------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+* {
+  margin: 0;
+}
+
+html {
+  background: var(--c-paper);
+  color: var(--c-ink);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  min-height: 100vh;
+  font-family: var(--f-sans);
+  font-size: var(--t-body);
+  line-height: var(--lh-body);
+  letter-spacing: var(--ls-body);
+  font-weight: 400;
+}
+
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+input,
+button,
+textarea,
+select {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+ul,
+ol {
+  list-style: none;
+  padding: 0;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-size: inherit;
+  font-weight: inherit;
+  line-height: inherit;
+}
+
+:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
+}
+
+/* ---------- tipo: sans ---------- */
+.t-hero,
+.t-lead,
+.t-display,
+.t-h3,
+.t-footer-link,
+.t-button,
+.t-link,
+.t-card,
+.t-button-s {
+  font-family: var(--f-sans);
+  font-weight: var(--w-display);
+}
+
+.t-hero        { font-size: var(--t-hero);        line-height: var(--lh-hero);        letter-spacing: var(--ls-hero); }
+.t-lead        { font-size: var(--t-lead);        line-height: var(--lh-lead);        letter-spacing: var(--ls-lead); }
+.t-display     { font-size: var(--t-display);     line-height: var(--lh-display);     letter-spacing: var(--ls-display); }
+.t-h3          { font-size: var(--t-h3);          line-height: var(--lh-h3);          letter-spacing: var(--ls-h3); }
+.t-footer-link { font-size: var(--t-footer-link); line-height: var(--lh-footer-link); letter-spacing: var(--ls-footer-link); }
+.t-button      { font-size: var(--t-button);      line-height: var(--lh-button);      letter-spacing: var(--ls-button); }
+.t-link        { font-size: var(--t-link);        line-height: var(--lh-link);        letter-spacing: var(--ls-link); }
+.t-card        { font-size: var(--t-card);        line-height: var(--lh-card);        letter-spacing: var(--ls-card); }
+.t-button-s    { font-size: var(--t-button-s);    line-height: var(--lh-button-s);    letter-spacing: var(--ls-button-s); }
+
+.t-body {
+  font-family: var(--f-sans);
+  font-weight: 400;
+  font-size: var(--t-body);
+  line-height: var(--lh-body);
+  letter-spacing: var(--ls-body);
+  color: var(--c-text);
+}
+
+/* ---------- tipo: serif ---------- */
+.t-h3-serif {
+  font-family: var(--f-serif);
+  font-weight: 400;
+  font-size: var(--t-h3-serif);
+  line-height: var(--lh-h3-serif);
+  letter-spacing: var(--ls-h3-serif);
+}
+
+/* ---------- tipo: mono (sempre uppercase) ---------- */
+.t-meta,
+.t-nav,
+.t-meta-hero,
+.t-tag,
+.t-badge {
+  font-family: var(--f-mono);
+  text-transform: uppercase;
+}
+
+.t-meta      { font-weight: 500; font-size: var(--t-meta);      line-height: var(--lh-meta);      letter-spacing: var(--ls-meta); color: var(--c-stone); }
+.t-nav       { font-weight: 700; font-size: var(--t-nav);       line-height: var(--lh-nav);       letter-spacing: var(--ls-nav); }
+.t-meta-hero { font-weight: 400; font-size: var(--t-meta-hero); line-height: var(--lh-meta-hero); letter-spacing: var(--ls-meta-hero); }
+.t-tag       { font-weight: 700; font-size: var(--t-tag);       line-height: var(--lh-tag);       letter-spacing: var(--ls-tag); }
+.t-badge     { font-weight: 700; font-size: var(--t-badge);     line-height: var(--lh-badge);     letter-spacing: var(--ls-badge); }
+
+/* ---------- layout ---------- */
+.container {
+  padding-inline: var(--gutter);
+}
+
+/* módulos da página: coluna com 16rem entre um e outro (como .home-page__flexible-content) */
+.stack-sections {
+  display: flex;
+  flex-direction: column;
+  gap: var(--section-y);
+}
+
+/* módulo que encosta no próximo: anula o gap (hero + manifesto no original) */
+.flush-after {
+  margin-bottom: calc(-1 * var(--section-y));
+}
+
+/* bloco creme opaco (Shop): cobre a grade de fundo no gap antes e depois dele */
+.section--paper {
+  background: var(--c-paper);
+  padding-block: var(--section-y);
+  margin-block: calc(-1 * var(--section-y));
+}
+
+/* bloco preto (Journal): o fundo cobre o gap até o próximo módulo */
+.section--dark {
+  background: var(--c-black);
+  color: var(--c-white);
+  padding-block: var(--section-dark-top) var(--section-y);
+}
+
+.stack-sections > .section--dark {
+  margin-bottom: calc(-1 * var(--section-y));
+}
+
+/* âncoras do menu (#the-venue, #packages…): param abaixo do header fixo */
+html {
+  scroll-behavior: smooth;
+}
+
+[id] {
+  scroll-margin-top: var(--header-h);
+}
+
+@media (max-width: 991.98px) {
+  [id] {
+    scroll-margin-top: var(--mobile-menu-top);
+  }
+}
+
+/* seção que recebe a faixa do modo guia (?guide=1), posicionada no topo dela */
+.has-guide {
+  position: relative;
+}
+
+/* ---------- overlays ---------- */
+/* página não rola atrás do menu mobile nem da lightbox da galeria. Não usar
+   scrollbar-gutter: stable — ele tira a barra das unidades vw e encolhe o rem (a raiz é 0.595238vw) */
+html:has(dialog[open]),
+html[data-menu-open] {
+  overflow: hidden;
+}
+
+/* ---------- acessibilidade ---------- */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

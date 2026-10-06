@@ -1,0 +1,193 @@
+/* Hero — medido em montamont.com (SITE-MESTRE.md §6, linha 1). */
+
+.hero {
+  position: relative;
+  width: 100%;
+  height: calc(100svh - var(--announce-offset));
+  color: var(--c-white);
+}
+
+@media (min-width: 992px) {
+  .hero {
+    height: calc(100vh - var(--announce-offset));
+  }
+}
+
+/* ---------- mídia ---------- */
+.media {
+  position: absolute;
+  inset: 0;
+}
+
+.image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* poster do clipe 1 (<picture>): a imagem principal, embaixo dos vídeos */
+.poster,
+.poster img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* sequência de clipes por cima do poster; só o 1º entra com fade (--hero-fade) */
+.sequence,
+.sequence video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* o z-index dos dois vídeos (o da frente por cima no crossfade) fica só aqui dentro:
+   o título e os botões continuam por cima da sequência */
+.sequence {
+  isolation: isolate;
+}
+
+.sequence video {
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity var(--hero-fade) var(--ease);
+}
+
+.sequence video[data-visivel] {
+  opacity: 1;
+}
+
+/* depois da entrada do 1º clipe: corte seco entre os clipes */
+.sequence[data-corte] video {
+  transition: none;
+}
+
+/* rótulo no canto superior direito, abaixo do header: não disputa espaço com o título */
+.placeholder {
+  --placeholder-align: start end;
+  padding: var(--hero-placeholder-pad);
+}
+
+/* ---------- título ---------- */
+.headline {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: var(--hero-title-w);
+  transform: translate(-50%, -75%);
+}
+
+.title {
+  position: relative;
+  z-index: 2;
+}
+
+/* home: H1 na serif, elegante e um pouco menor que o antigo display em sans (--t-hero-home);
+   largura limitada para quebrar em 2 linhas equilibradas. Foto pura, sem scrim: só uma sombra
+   difusa no próprio texto (--hero-title-shadow) ajuda a leitura sobre céu claro.
+   Dois seletores para vencer o .t-hero, cuja ordem no CSS final muda entre dev e build */
+.headline .title {
+  max-width: var(--hero-home-title-max);
+  font-family: var(--f-serif);
+  font-weight: 400;
+  font-size: var(--t-hero-home);
+  line-height: var(--lh-hero-home);
+  letter-spacing: var(--ls-hero-home);
+  text-wrap: balance;
+  text-shadow: var(--hero-title-shadow);
+}
+
+/* palavra do H1: inline-block para a entrada da abertura (máscara por linha) poder movê-la */
+.palavra {
+  display: inline-block;
+}
+
+.line1 {
+  display: block;
+}
+
+.subtitle {
+  position: relative;
+  z-index: 2;
+  max-width: var(--stays-featured-w);
+  margin-top: var(--s-5);
+  font-size: var(--t-footer-link);
+  line-height: var(--lh-footer-link);
+  letter-spacing: var(--ls-footer-link);
+  text-wrap: pretty;
+}
+
+/* ---------- botões + legenda ---------- */
+.bottom {
+  position: absolute;
+  left: var(--gutter);
+  bottom: var(--hero-bottom);
+  display: flex;
+  flex-direction: column;
+  gap: var(--hero-stack);
+}
+
+.links {
+  display: flex;
+  gap: var(--hero-btn-gap);
+}
+
+.annotation {
+  position: relative;
+  z-index: 2;
+}
+
+/* legenda do clipe da frente (HeroLegenda): número + texto curto, troca a cada clipe */
+.clipe {
+  min-height: calc(var(--lh-meta-hero) * 1em);
+}
+
+.clipeTexto {
+  display: inline-flex;
+  gap: var(--s-2);
+  animation: clipe-entra var(--dur) var(--ease) both;
+}
+
+.clipeNumero {
+  color: var(--c-meta-dark);
+}
+
+@keyframes clipe-entra {
+  from {
+    opacity: 0;
+  }
+}
+
+/* ---------- abaixo de 992px (medido em 390px) ---------- */
+@media (max-width: 991.98px) {
+  .headline {
+    width: var(--hero-title-w-m);
+    transform: translate(-50%, -50%);
+  }
+
+  .bottom {
+    left: var(--gutter);
+    bottom: var(--s-3);
+    width: calc(100% - 2 * var(--gutter));
+  }
+
+  /* a legenda do local só aparece no desktop */
+  .annotation {
+    display: none;
+  }
+}
+
+/* mobile: botões empilhados em largura total */
+@media (max-width: 767.98px) {
+  .links {
+    flex-direction: column;
+    gap: var(--s-2);
+  }
+
+  .links > * {
+    width: 100%;
+  }
+}

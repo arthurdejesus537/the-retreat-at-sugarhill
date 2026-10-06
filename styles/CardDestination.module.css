@@ -1,0 +1,92 @@
+/* Card de destino — medido em montamont.com (.destination-preview). */
+
+.card {
+  display: block;
+  min-width: 0;
+}
+
+.media {
+  position: relative;
+  margin-bottom: var(--card-media-gap);
+}
+
+.image {
+  aspect-ratio: var(--destination-ratio);
+}
+
+/* card grande (as 2 primeiras hospedagens): foto horizontal */
+.large {
+  aspect-ratio: var(--stay-large-ratio);
+}
+
+.badge {
+  position: absolute;
+  left: 50%;
+  bottom: var(--badge-bottom);
+  width: var(--soon-badge-w);
+  max-width: calc(100% - var(--soon-badge-inset));
+  translate: -50% 0;
+}
+
+.description {
+  max-width: var(--stays-head-w);
+  margin-bottom: var(--s-4);
+}
+
+.region {
+  margin-bottom: var(--s-1);
+}
+
+.name {
+  margin-bottom: var(--s-4);
+}
+
+.view {
+  display: none;
+}
+
+@media (hover: hover) {
+  .image {
+    transition: filter var(--dur-fast) var(--ease);
+  }
+
+  .body {
+    transition: opacity var(--dur-fast) var(--ease);
+  }
+
+  .view {
+    display: inline-flex;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    translate: -50% -50%;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--dur-fast) var(--ease);
+  }
+
+  a.card:hover .image {
+    filter: brightness(var(--media-dim));
+  }
+
+  a.card:hover .body {
+    opacity: var(--text-dim-hover);
+  }
+
+  a.card:hover .view {
+    opacity: 1;
+  }
+}
+
+/* ---------- abaixo de 992px ---------- */
+@media (max-width: 991.98px) {
+  .name {
+    font-size: var(--t-destination-m);
+    line-height: var(--lh-h3);
+    margin-bottom: var(--s-2);
+  }
+
+  .badge {
+    bottom: var(--s-2);
+  }
+}

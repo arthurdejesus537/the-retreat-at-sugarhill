@@ -1,0 +1,167 @@
+/* Footer — footer do modelo (.footer): CTA no lugar da newsletter, menus, base com crédito. */
+
+.footer {
+  display: flex;
+  flex-direction: column;
+  gap: var(--footer-gap);
+  margin-top: var(--section-y);
+  padding: var(--footer-pad);
+  background: var(--c-black);
+  color: var(--c-white);
+}
+
+/* depois do Check Your Date (foto full-bleed), o footer encosta: sem a faixa creme do gap */
+:global(main:has(> #check-your-date:last-child)) + .footer {
+  margin-top: 0;
+}
+
+/* ---------- CTA repetido (lugar da newsletter) ---------- */
+.cta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--s-5);
+  padding-bottom: var(--footer-menus-gap);
+  border-bottom: 1px solid var(--c-chip-dark);
+}
+
+/* ---------- menus ---------- */
+.menus {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--footer-menus-gap);
+}
+
+.primary {
+  display: flex;
+  flex-direction: column;
+  gap: var(--footer-big-gap);
+}
+
+/* links grandes: lh 1.2 no footer (no manifesto é 1.15) */
+.primary :global(.t-lead) {
+  line-height: var(--lh-lead-footer);
+}
+
+.columns {
+  display: flex;
+  gap: var(--footer-col-gap);
+}
+
+.column {
+  flex: 0 0 var(--footer-col-w);
+}
+
+.column li {
+  color: var(--c-white);
+}
+
+.columnTitle {
+  margin-bottom: var(--footer-label-gap);
+}
+
+/* ---------- base ---------- */
+.bottom {
+  display: flex;
+  align-items: flex-end;
+  gap: var(--footer-bottom-gap);
+}
+
+.copyright {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-5);
+}
+
+.copyright p {
+  color: var(--c-white);
+}
+
+/* logo alinhado à esquerda (no header ele é centralizado) */
+.copyright .logo {
+  place-items: start;
+  height: auto;
+  max-width: none;
+}
+
+.pressGroup {
+  margin-left: auto;
+}
+
+.group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--group-label-gap);
+}
+
+.logos {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+/* "As featured in": nome das publicações em mono (logo de terceiros só com autorização) */
+.pressLogos {
+  gap: var(--s-1) var(--press-gap);
+}
+
+.bottom .press {
+  color: var(--c-white);
+}
+
+.bottom .credit {
+  color: var(--c-meta-dark);
+}
+
+.bottom .credit a:hover {
+  color: var(--c-white);
+}
+
+/* ---------- abaixo de 992px ---------- */
+@media (max-width: 991.98px) {
+  .menus {
+    flex-direction: column;
+  }
+
+  .primary :global(.t-lead) {
+    font-size: var(--t-footer-big-m);
+  }
+
+  .columns {
+    flex-wrap: wrap;
+    gap: var(--footer-menus-gap) var(--s-1);
+  }
+
+  .column {
+    flex: 0 0 calc(50% - var(--s-1) / 2);
+  }
+
+  /* endereço ocupa a linha inteira */
+  .column:first-child {
+    flex-basis: 100%;
+  }
+
+  .cta {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .cta :global(.t-lead) {
+    font-size: var(--t-footer-big-m);
+  }
+
+  .bottom {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--footer-menus-gap);
+  }
+
+  .pressGroup {
+    margin-left: 0;
+  }
+}
+
+/* crédito dos componentes de interface (Skiper UI), depois do crédito do site */
+.creditoUi:not(:first-child) {
+  margin-left: var(--s-2);
+}

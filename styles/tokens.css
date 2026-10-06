@@ -1,0 +1,363 @@
+/*
+ * tokens.css — fonte única de cores, tipo, espaço e forma.
+ * Valores medidos em montamont.com (2026-09-25); ver SITE-MESTRE.md §2–§4.
+ * Todos os tamanhos em rem sobre raiz fluida: design base 1680px, 1rem = 10px.
+ */
+
+/* ---------- raiz fluida (define o que 1rem vale) ---------- */
+html { font-size: 2.315458937vw; }                                   /* < 768px */
+@media (min-width: 768px)  { html { font-size: calc(5px + 0.665323vw); } }
+@media (min-width: 992px)  { html { font-size: 0.595238vw; } }       /* 10px ÷ 1680px */
+@media (min-width: 2500px) { html { font-size: calc(-3.2px + 0.665323vw); } }
+@media (min-width: 3000px) { html { font-size: calc(-6.6px + 0.665323vw); } }
+
+:root {
+  /* ---------- cores ---------- */
+  --c-paper:      #F9F7F5;
+  --c-ink:        #1D1D1C;
+  --c-black:      #000000;
+  --c-text:       #222222;
+  --c-graphite:   #444444;
+  --c-stone:      #969696;
+  --c-signal:     #FEFA8D;
+  --c-white:      #FFFFFF;
+  --c-chip:       #E0DEDC;
+  --c-grid-line:  #EDEBE9;
+  --c-chip-dark:  rgba(255, 255, 255, .15);
+  --c-tag-dark:   #757575;
+  --c-meta-dark:  rgba(255, 255, 255, .85);
+  --c-line:       #DDDDDD;                   /* borda do header sólido (Fase 3) */
+  --c-hover:      rgba(0, 0, 0, .07);        /* fundo do link do header no hover / aberto */
+  --c-btn-ink:      #181818;                 /* texto do botão branco (--black--300) */
+  --c-btn-hover:    #F7F7F7;                 /* fundo do botão branco no hover (--gray--25) */
+  --c-focus-light:  rgba(255, 255, 255, .3); /* anel de foco do botão branco */
+  --c-chip-hover:   #CBC8C6;                 /* fundo do chip no hover (--cd-glacier-light--460) */
+  --c-chip-dark-hover: rgba(255, 255, 255, .3);
+  --c-bar-dark:     rgba(255, 255, 255, .2);  /* trilho da barra do carrossel no fundo preto */
+  --c-tag-dark-hover:  #6E6E6E;
+  --c-btn-dark-hover: #444444;              /* hover do botão preto */
+  --c-focus-dark:    rgba(24, 24, 24, .3);  /* anel de foco do botão preto */
+
+  /* ---------- fontes ---------- */
+  /* --font-* vêm do next/font em app/layout.tsx (Inter Tight, Geist Mono, Newsreader) */
+  --f-sans:  var(--font-sans), "Helvetica Neue", Arial, sans-serif;
+  --f-mono:  var(--font-mono), ui-monospace, monospace;
+  --f-serif: var(--font-serif), "Times New Roman", serif;
+
+  /* peso da sans onde o original usa 700. 550 = densidade de tinta mais próxima do
+     ABC Diatype 700 em todos os tamanhos (medido na Fase 2, Inter Tight é variável) */
+  --w-display: 550;
+
+  /* ---------- tipo: tamanho / line-height / letter-spacing ---------- */
+  --t-hero:        9.6rem;  --lh-hero:        0.95; --ls-hero:        normal;
+  --t-lead:        4.4rem;  --lh-lead:        1.15; --ls-lead:        normal;
+  --lh-lead-footer: 1.2;    /* links grandes do footer */
+  --t-display:     4rem;    --lh-display:     1.05; --ls-display:     normal;
+  --t-h3:          2.8rem;  --lh-h3:          1.15; --ls-h3:          0.02em;
+  --t-h3-serif:    2.8rem;  --lh-h3-serif:    1.15; --ls-h3-serif:    normal;
+  --t-footer-link: 2rem;    --lh-footer-link: 1.4;  --ls-footer-link: 0.01em;
+  --t-button:      1.9rem;  --lh-button:      1;    --ls-button:      normal;
+  --t-link:        1.8rem;  --lh-link:        1.2;  --ls-link:        0.02em;
+  --t-body:        1.7rem;  --lh-body:        1.3;  --ls-body:        0.01em;
+  --t-card:        1.6rem;  --lh-card:        1;    --ls-card:        0.02em;
+  --t-button-s:    1.5rem;  --lh-button-s:    1;    --ls-button-s:    normal;
+  --t-meta:        1.4rem;  --lh-meta:        1;    --ls-meta:        0.1em;   /* mono 500, uppercase */
+  --t-nav:         1.4rem;  --lh-nav:         1;    --ls-nav:         0.1em;   /* mono 700, uppercase */
+  --t-meta-hero:   1.4rem;  --lh-meta-hero:   1.4;  --ls-meta-hero:   0.08em;  /* mono 400, uppercase */
+  --t-tag:         1.3rem;  --lh-tag:         1;    --ls-tag:         0.08em;  /* mono 700, uppercase */
+  --t-badge:       1.1rem;  --lh-badge:       1;    --ls-badge:       0.02em;  /* mono 700, uppercase */
+
+  /* ---------- escala de espaço ---------- */
+  --s-0: 0.4rem;  --s-1: 0.8rem;  --s-2: 1.2rem;  --s-3: 1.6rem;
+  --s-4: 2rem;    --s-5: 2.4rem;  --s-6: 3.2rem;  --s-7: 4rem;
+  --s-8: 8rem;    --s-9: 12rem;
+
+  /* ---------- layout ---------- */
+  --gutter:           4rem;
+  --col-gap:          1.6rem;
+  --section-y:        16rem;
+  --section-dark-top: 8rem;
+  --stack-title:      2.4rem;
+  --header-h:         4.8rem;   /* + 1px de borda */
+  --footer-pad:       12rem var(--gutter) 8rem;   /* laterais = gutter das seções */
+  --grid-bg-start:    11rem;                    /* primeira linha vertical */
+  --grid-bg-width:    calc(100% - 23.8rem);     /* bloco das verticais; borda direita = última linha */
+  --grid-bg-step:     36.1rem;
+  --grid-bg-rows:     3;                        /* horizontais: viewport em 3 faixas */
+
+  /* ---------- forma ---------- */
+  --r-btn:   0.6rem;
+  --r-chip:  0.6rem;
+  --r-badge: 0.6rem;
+  --r-nav:   1rem;
+  --r-media: 0;
+  --bw-btn:  2px;
+
+  /* ---------- sombra e vidro ---------- */
+  --blur-glass:  15px;
+
+  /* ---------- movimento (medido na Fase 3) ---------- */
+  --ease:     ease;
+  --dur-fast: .3s;   /* hover, menus, acordeão, barra mobile */
+  --dur:      .6s;   /* sublinhados */
+
+  /* ---------- paddings de componente (medidos, §4) ---------- */
+  --pad-btn:   1rem 3.2rem;
+  --pad-btn-s: 0.8rem 1rem;
+  --pad-nav:   0.6rem 0.8rem;
+  --pad-chip:  0.6rem 1rem;
+  --pad-badge: 0.4rem 1.2rem;
+
+  /* ---------- logo (arquivo do venue) ---------- */
+  --logo-h:    1.8rem;
+
+  /* ---------- botões (medidos na Fase 4) ---------- */
+  --btn-h:     3.9rem;
+  --btn-gap:   0.4rem;
+  --focus-ring: 4px;
+
+  /* ---------- hero ---------- */
+  --hero-title-w:  calc(100% - 8rem);
+  --t-hero-home:   8.8rem;      /* H1 da home no desktop: serif 400, elegante (antes 15rem em sans) */
+  --lh-hero-home:  1.02;
+  --ls-hero-home:  -0.015em;
+  --hero-home-title-max: 110rem; /* largura máxima do H1 da home: 2 linhas equilibradas */
+  --hero-title-shadow: 0 0 4rem rgba(0, 0, 0, .35); /* foto pura (sem scrim): sombra difusa só no texto */
+  --hero-bottom:   2.4rem;      /* distância do bloco de botões até a base */
+  --hero-stack:    2.4rem;      /* botões → legenda */
+  --hero-btn-gap:  1.6rem;
+  --hero-placeholder-pad: 12rem var(--gutter);
+
+  /* ---------- mídia ---------- */
+  --media-dim:       .8;   /* imagem com título branco por cima (card grande de stay) */
+  --media-dim-hover: .7;   /* hover em imagem de card */
+  --text-dim-hover:  .7;   /* opacidade do texto do card de destino no hover */
+
+  /* ---------- botão S (rótulo "View" no hover de card) ---------- */
+  --btn-h-s:   3.2rem;
+
+  /* ---------- chip / selo ---------- */
+  --chip-min-h:   3.2rem;
+  --chip-gap:     0.4rem;   /* entre chips */
+  --badge-w:      30rem;
+  --badge-bottom: 2.4rem;
+  --badge-icon:   1.6rem;
+  --badge-gap:    0.3rem;
+
+  /* ---------- card de stay (Fase 6) ---------- */
+  --stay-ratio:        517 / 724;
+  --card-media-gap:    2.4rem;   /* imagem → texto */
+  --card-inset:        0.8rem;   /* recuo do texto em relação à imagem */
+  --card-data-pad:     2rem;     /* respiro à direita de descrição + chips */
+
+  /* ---------- Selected Stays (Fase 6) ---------- */
+  --stays-featured-w:  83.2rem;
+  --stays-head-w:      38.8rem;
+  --stays-head-top:    5.6rem;
+  --stays-list-gap:    5.6rem;
+
+  /* ---------- carrossel (Fase 7) ---------- */
+  --carousel-gap:        16px;      /* spaceBetween do Swiper original: px fixo, não escala */
+  --carousel-bar-w:      106rem;
+  --carousel-bar-h:      2px;
+  --carousel-bar-top:    5.6rem;
+  --carousel-bar-track:  rgba(0, 0, 0, .2);
+  --carousel-arrow:      2.4rem;
+  --r-bar:               10px;
+
+  /* ---------- Curated Collections (Fase 7) ---------- */
+  --collection-ratio:    523 / 731;
+  --collection-pad:      2.4rem 2rem;
+  --collections-after:   4rem;      /* margem extra depois do carrossel */
+
+  /* ---------- banner "Passes" / large preview (Fase 8) ---------- */
+  --large-h:          calc(100vh - 5rem);
+  --large-inset-w:    43rem;     /* vídeo central */
+  --large-label-top:  2.4rem;
+
+  /* ---------- destino em destaque (Fase 11) ---------- */
+  --feature-gap:         5.6rem;
+
+  /* ---------- Alpine Destinations (Fase 11) ---------- */
+  --destination-ratio:   388 / 543;
+  --soon-badge-w:        40rem;
+  --soon-badge-inset:    8rem;       /* largura máx. = 100% − 8rem */
+
+  /* ---------- footer (Fase 12) ---------- */
+  --footer-gap:        9.6rem;   /* CTA → menus → base */
+  --footer-menus-gap:  5.6rem;
+  --footer-col-w:      25.3rem;
+  --footer-col-gap:    1.6rem;
+  --footer-big-gap:    0.8rem;   /* entre os links grandes */
+  --footer-label-gap:  1.6rem;   /* rótulo da coluna → links */
+  --footer-bottom-gap: 6rem;
+  --press-gap:         2.4rem;
+  --group-label-gap:   1rem;
+
+  /* ---------- botão L (menu mobile, formulário) ---------- */
+  --btn-h-l:          4.7rem;
+  --pad-btn-l:        1.2rem 3.2rem;
+
+  /* ---------- manifesto (Fase 5) ---------- */
+  --manifesto-top:    6.4rem;   /* hero → parágrafo */
+  --manifesto-bottom: 9.6rem;   /* link → próximo módulo (anula o gap de 16rem) */
+
+  /* ---------- link de texto com sublinhado animado ---------- */
+  --underline-h: 1px;
+  --underline-h-bold: 2px;   /* variante "single" (footer) */
+
+  /* ---------- header ---------- */
+  --nav-icon-gap: 0.3rem;
+  --z-header:     1000;
+
+  /* ---------- template de venue (componentes novos, na mesma escala) ---------- */
+  --announce-h:    clamp(36px, 4.4rem, 40px);   /* announcement bar: 36–40px (VENUE-TEMPLATE §4) */
+  --announce-offset: 0px;                        /* vira --announce-h quando a faixa existe */
+  --stay-large-ratio: 4 / 3;                     /* Stay On Site: os 2 cards grandes */
+  --gallery-h:       48rem;                      /* Gallery: altura única das fotos */
+  /* scrim atrás de texto branco sobre foto (contraste mínimo 4.5:1, medido no QA) */
+  --c-scrim:         rgba(0, 0, 0, .8);
+  --c-scrim-mid:     rgba(0, 0, 0, .45);
+  --c-scrim-0:       rgba(0, 0, 0, 0);
+  --scrim-top-h:     24rem;                      /* faixa escura do topo: header / rótulo */
+  --page-photo-ratio: 3 / 2;                     /* página The Venue: fotos da lista de espaços */
+  --hero-fade:       .8s;                        /* hero em vídeo: fade do 1º clipe sobre o poster */
+  /* abertura "A Janela" da home (VENUE-TEMPLATE §2): 1ª visita da sessão */
+  --z-abertura:        calc(var(--z-header) + 10); /* acima do header, da faixa de anúncio e do guia */
+  --t-abertura-nome:   12rem;   --lh-abertura-nome: 1; --ls-abertura-nome: -0.01em; /* serif 400 */
+  --abertura-nome-gap: 0.25em;  /* entre as duas partes do nome, antes de abrir (um espaço) */
+  --abertura-janela-h: 14vh;    /* janela entre as palavras */
+  --abertura-janela-ratio: 4 / 5;
+  --abertura-folga:    0.2em;   /* janela ↔ palavras (em da serif do nome) */
+  --abertura-cresce:   1.1;     /* a janela cresce 10% na pausa */
+  --abertura-ritmo:    1;       /* multiplica todos os tempos abaixo (celular: .85) */
+  --abertura-nome:     .6s;     /* nome sozinho, desde o início da navegação */
+  --abertura-abre:     .4s;     /* o nome se abre e a janela aparece */
+  --abertura-pausa:    1.2s;    /* pausa com a janela crescendo */
+  --abertura-expande:  1s;      /* a janela vai até a tela cheia */
+  --abertura-hero-texto: .5s;   /* cada linha do H1 / bloco do hero entrando, depois da janela */
+  --abertura-stagger:  .1s;     /* entre linhas e blocos */
+  --abertura-texto:    .8s;     /* páginas internas: entrada do título */
+  --abertura-curva-abre:    cubic-bezier(.22, 1, .36, 1);
+  --abertura-curva-pausa:   cubic-bezier(.45, 0, .55, 1);
+  --abertura-curva-expande: cubic-bezier(.76, 0, .24, 1);
+  --abertura-curva-texto:   cubic-bezier(.22, 1, .36, 1);
+  /* card Schedule a Tour (components/tour/, VENUE-TEMPLATE §4 "Schedule a Tour") */
+  --z-tour:          calc(var(--z-abertura) + 10); /* acima de tudo, inclusive da abertura */
+  --c-tour-fundo:    rgba(29, 29, 28, .45);        /* --c-ink a 45% atrás do card */
+  --tour-blur:       6px;
+  --tour-w:          560px;                        /* card só com o formulário / coluna do formulário */
+  --tour-w-foto:     880px;                        /* card com foto ao lado (768px ou mais) */
+  --tour-w-form-foto: 460px;                       /* coluna do formulário no card com foto */
+  --tour-h-foto:     600px;                        /* altura mínima do card com foto (retrato) */
+  --tour-foto-fade:  .6s;                          /* crossfade entre as fotos do loop */
+  --tour-traco-w:    16px;                         /* tracinho do loop, inativo */
+  --tour-traco-ativo-w: 40px;                      /* tracinho da foto na tela */
+  --tour-traco-gap:  6px;
+  --c-traco:         rgba(255, 255, 255, .6);      /* tracinho inativo sobre a foto */
+  --tour-foto-min:   280px;                        /* coluna da foto nunca menor que isso */
+  --tour-r:          12px;                         /* cantos do card */
+  --tour-foto-r:     8px;                          /* cantos da foto */
+  --tour-foto-inset: 8px;                          /* moldura do card em volta da foto */
+  --t-tour-foto:     5.2rem;  --lh-tour-foto: 1.05; /* título sobre a foto, peso --w-display */
+  --tour-scrim-h:    75%;                          /* altura do scrim no alto da foto */
+  --tour-scrim-base-h: 30%;                        /* scrim da base, atrás dos tracinhos */
+  --tour-margem:     16px;                         /* card ↔ borda da tela (celular: laterais) */
+  --tour-pad:        4rem;
+  --tour-gap:        3.2rem;                       /* entre as perguntas / blocos da página */
+  --tour-barra-h:    2px;                          /* barra de status na base do card */
+  --tour-chip-h:     44px;                         /* alvo de toque dos chips e do X */
+  --t-input-min:     16px;                         /* campos: 16px ou mais, o iOS não dá zoom */
+  --o-disabled:      .3;                           /* botão desligado */
+  /* slider de convidados do card */
+  --tour-trilho-h:   4px;
+  --tour-puxador:    20px;
+  --tour-marca-h:    6px;
+  --c-trilho:        var(--c-chip);
+  /* SmoothInput (cursor com mola, Skiper UI) */
+  --caret-w:         2px;
+  --caret-h:         .9em;                         /* em da fonte do campo */
+  /* surgimento suave: texto da Intro linha por linha (SurgeLinhas) e itens do card Schedule a Tour */
+  --surge-dur:        .7s;
+  --surge-stagger:    80ms;                        /* entre linhas */
+  --surge-sobe:       .6em;
+  --surge-card-dur:   .36s;
+  --surge-card-stagger: 60ms;                      /* entre itens do card */
+  --surge-card-sobe:  8px;
+  /* celebração da página 3 do card (Celebracao.tsx): só a paleta do site */
+  --c-celebra-creme:  #F3EAD8;
+  --c-celebra-ouro:   #D6BC84;                     /* dourado suave */
+  --c-celebra-acento: var(--c-signal);
+  --c-celebra-quente: #C98A5E;
+}
+
+@media (max-width: 991.98px) {
+  :root {
+    --gallery-h: 32rem;
+    --t-tour-foto: 3.2rem;   /* tablet: coluna da foto estreita (≥ 280px) e rem maior */
+  }
+}
+
+@media (max-width: 767.98px) {
+  :root {
+    --page-photo-ratio: 4 / 3;
+    --abertura-ritmo:    .85;   /* celular: abertura ~15% mais rápida */
+    --t-abertura-nome:   7.2rem; /* nome empilhado */
+    --abertura-nome-gap: 0em;
+    --tour-pad:          2.4rem;
+  }
+}
+
+/* com a faixa de anúncio, o hero desconta a altura dela para os botões não saírem da tela
+   (valor inicial; o Header.tsx troca pela altura medida, que no mobile tem mais linhas) */
+:root:has(#announcement) {
+  --announce-offset: var(--announce-h);
+}
+
+/* ==========================================================================
+   Responsivo (Fase 14). O original é mobile-first com cortes em 768 e 992px;
+   aqui os valores de desktop são o padrão e estes blocos sobrescrevem abaixo de 992.
+   ========================================================================== */
+@media (max-width: 991.98px) {
+  :root {
+    --gutter:        2rem;
+    --section-y:     12rem;
+
+    --t-hero:        4rem;
+    --t-hero-home:   4.4rem;      /* serif no celular (a serif lê menor que a sans do --t-hero) */
+    --t-display:     3rem;
+    --t-lead:        2.6rem;
+    --t-h3:          2.5rem;  --lh-h3: 1.2;
+    --t-h3-serif:    2.3rem;
+
+    --manifesto-top:    5.6rem;
+    --manifesto-bottom: 8rem;
+
+    --card-media-gap:   1.6rem;
+    --card-inset:       0.4rem;
+
+    --carousel-bar-w:   24.4rem;
+    --carousel-bar-top: 4rem;
+
+    --header-top-h:     6.4rem;    /* barra de cima do header mobile (esconde ao rolar) */
+    --section-link-top: 3.2rem;
+    --t-destination-m:  2rem;      /* nome do card de destino */
+    --t-collection-meta-m: 1.2rem; /* marca / "Coleção" no card de coleção */
+    --t-collection-name-m: 2.6rem;
+    --hero-title-w-m:   calc(100% - 4rem);
+    --stays-wrapper-bottom-m: 6.4rem;
+    --stay-card-w-m:    28.5rem;
+    --t-stays-title-m:  4rem;
+    --t-stays-title-t:  2.6rem;
+    --t-stays-featured-t: 4.4rem;
+    --badge-w-m:        20rem;
+    --t-footer-big-m:   3.2rem;
+    --t-mobile-menu:    2.6rem;
+    --mobile-menu-top:  12.1rem;   /* o painel começa abaixo das duas barras do header */
+    --mobile-icon:      2.2rem;
+    --burger-gap:       0.6rem;
+    --logo-h:           1.4rem;
+    --footer-gap:       5.6rem;
+    --footer-pad:       8rem var(--gutter) 12rem;
+  }
+}

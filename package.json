@@ -1,0 +1,28 @@
+{
+  "name": "site-build",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "look": "node tools/look/sync.mjs",
+    "predev": "npm run look",
+    "dev": "next dev -p 3001",
+    "prebuild": "npm run look",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint"
+  },
+  "dependencies": {
+    "framer-motion": "^13.4.4",
+    "next": "16.3.6",
+    "react": "19.2.8",
+    "react-dom": "19.2.8"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "eslint": "^9",
+    "eslint-config-next": "16.3.6",
+    "typescript": "^5"
+  }
+}

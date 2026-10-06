@@ -1,0 +1,60 @@
+/* Chip — medido em montamont.com (SITE-MESTRE.md §5.3). */
+
+.list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--chip-gap);
+}
+
+.tag {
+  display: flex;
+  align-items: center;
+  max-width: 100%;
+  min-height: var(--chip-min-h);
+  padding: var(--pad-chip);
+  border-radius: var(--r-chip);
+}
+
+.label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.light {
+  background: var(--c-chip);
+  color: var(--c-ink);
+}
+
+.dark {
+  background: var(--c-chip-dark);
+  color: var(--c-tag-dark);
+}
+
+@media (hover: hover) {
+  .tag {
+    transition: background-color var(--dur-fast) var(--ease);
+  }
+
+  .light:hover {
+    background: var(--c-chip-hover);
+  }
+
+  .dark {
+    transition:
+      background-color var(--dur-fast) var(--ease),
+      color var(--dur-fast) var(--ease);
+  }
+
+  .dark:hover {
+    background: var(--c-chip-dark-hover);
+    color: var(--c-tag-dark-hover);
+  }
+}
+
+/* abaixo de 992px: no máximo 2 chips + contador (o 3º some se não for o último) */
+@media (max-width: 991.98px) {
+  .list > li:nth-child(3):not(:last-child) {
+    display: none;
+  }
+}

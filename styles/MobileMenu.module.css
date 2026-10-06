@@ -1,0 +1,62 @@
+/* Menu mobile — medido em montamont.com a 390px (.mobile-menu). */
+
+.menu {
+  position: fixed;
+  top: var(--header-offset, 0px);
+  left: 0;
+  z-index: calc(var(--z-header) - 1);
+  width: 100%;
+  height: 100dvh;
+  padding-top: var(--mobile-menu-top);
+  overflow: auto;
+  background: var(--c-paper);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--dur-fast) var(--ease);
+}
+
+.menu[data-open] {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+@media (min-width: 992px) {
+  .menu {
+    display: none;
+  }
+}
+
+.item {
+  border-bottom: 1px solid var(--c-line);
+}
+
+.trigger {
+  display: block;
+  width: 100%;
+  padding: var(--s-5) var(--gutter);
+  font-family: var(--f-sans);
+  font-weight: var(--w-display);
+  font-size: var(--t-mobile-menu);
+  line-height: 1;
+  text-align: left;
+  color: var(--c-ink);
+}
+
+/* página aberta */
+.trigger[aria-current="page"] {
+  text-decoration: underline;
+  text-decoration-thickness: var(--underline-h);
+  text-underline-offset: 0.15em;
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--s-4);
+  padding: var(--s-6) var(--gutter);
+}
+
+.textUs {
+  color: var(--c-ink);
+}

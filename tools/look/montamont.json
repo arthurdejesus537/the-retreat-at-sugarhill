@@ -1,0 +1,72 @@
+{
+  "referencia": {
+    "preto_p1": 1.65,
+    "branco_p99": 97.45,
+    "croma_mediana": {
+      "sombras": 7.2242797934145795,
+      "meios": 10.849697529818096,
+      "luzes": 3.2236840746011057
+    },
+    "tinta_sombras": [
+      -0.3306200314103182,
+      6.886563239642039
+    ],
+    "tinta_luzes": [
+      0.3643170928152684,
+      1.6032100451650413
+    ],
+    "verde_matiz": 115.51,
+    "verde_croma": 22.18,
+    "calor_meios_b": 11.81
+  },
+  "fonte": {
+    "preto_p1": 0.78,
+    "branco_p99": 91.99,
+    "croma_mediana": {
+      "sombras": 10.135804340382121,
+      "meios": 21.837964996126146,
+      "luzes": 5.150513845633231
+    },
+    "tinta_sombras": [
+      1.8880539335298947,
+      8.054577554876394
+    ],
+    "tinta_luzes": [
+      -0.6297675653629468,
+      3.390967921497298
+    ],
+    "verde_matiz": 114.06,
+    "verde_croma": 23.83,
+    "calor_meios_b": 19.93
+  },
+  "lut": {
+    "curva_L": {
+      "0": 0.6,
+      "10": 6.1,
+      "25": 17.7,
+      "50": 39.4,
+      "75": 76.8,
+      "90": 95.1,
+      "100": 99.8
+    },
+    "saturacao": {
+      "sombras": 0.713,
+      "meios": 0.6,
+      "luzes": 0.626
+    },
+    "verde_giro_graus": 1.4,
+    "verde_croma_extra": 1.0,
+    "tinta_sombras_ab": [
+      -2.22,
+      -1.17
+    ],
+    "tinta_luzes_ab": [
+      0.99,
+      -1.79
+    ]
+  },
+  "fotos": {
+    "referencia": 10,
+    "fonte": 29
+  }
+}

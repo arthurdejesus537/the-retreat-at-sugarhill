@@ -1,0 +1,43 @@
+/* Gallery (VENUE-TEMPLATE §4, seção 12): alturas iguais (--gallery-h), largura pelo formato. */
+
+/* título à esquerda, link junto das setas à direita */
+.headline {
+  flex: 1 1 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-right: var(--s-5);
+}
+
+.photo {
+  position: relative;
+  display: block;
+  padding: 0;
+  cursor: zoom-in;
+  height: var(--gallery-h);
+  /* foto horizontal no celular: não passa da tela (recorta em vez de estourar) */
+  max-width: calc(100vw - 2 * var(--gutter));
+  overflow: hidden;
+  border-radius: var(--r-media);
+}
+
+.image {
+  object-fit: cover;
+}
+
+/* "See the full gallery →" é botão (abre a lightbox), com a cara do link sublinhado */
+.more {
+  text-decoration: underline;
+  text-underline-offset: 0.3em;
+  text-decoration-thickness: var(--underline-h);
+}
+
+@media (hover: hover) {
+  .photo .image {
+    transition: filter var(--dur-fast) var(--ease);
+  }
+
+  .photo:hover .image {
+    filter: brightness(var(--media-dim-hover));
+  }
+}

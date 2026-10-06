@@ -1,0 +1,47 @@
+/* Grade de fundo — regras copiadas do original (SITE-MESTRE.md §4). Só no desktop. */
+
+.grid {
+  display: none;
+}
+
+@media (min-width: 992px) {
+  .grid {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+  }
+
+  .grid::before,
+  .grid::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    height: 100%;
+  }
+
+  /* verticais */
+  .grid::before {
+    left: var(--grid-bg-start);
+    width: var(--grid-bg-width);
+    background-image: linear-gradient(
+      to right,
+      var(--c-grid-line) 1px,
+      transparent 1px
+    );
+    background-size: var(--grid-bg-step) auto;
+    border-right: 1px solid var(--c-grid-line);
+  }
+
+  /* horizontais */
+  .grid::after {
+    left: 0;
+    width: 100%;
+    background-image: linear-gradient(
+      to bottom,
+      var(--c-grid-line) 1px,
+      transparent 1px
+    );
+    background-size: auto calc(100% / var(--grid-bg-rows));
+  }
+}

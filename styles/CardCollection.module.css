@@ -1,0 +1,89 @@
+/* Card de coleção — medido em montamont.com (.home-collections__slider-item).
+   Foto pura só com o título; legenda (linha de cima, frase, itens) embaixo da foto. */
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-2);
+  color: var(--c-text);
+  -webkit-user-drag: none;
+}
+
+/* ---------- foto + título ---------- */
+.frame {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: var(--collection-ratio);
+  padding: var(--collection-pad);
+  overflow: hidden;
+  color: var(--c-white);
+  background: var(--c-ink); /* card "mais coleções" */
+}
+
+.media {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+}
+
+/* rótulo do placeholder no alto: o título ocupa o meio */
+.image {
+  --placeholder-align: start center;
+  --placeholder-pad: var(--s-8) var(--s-4);
+  height: 100%;
+}
+
+.name {
+  text-align: center;
+  text-wrap: balance;
+}
+
+/* ---------- legenda (fora da foto, alinhada à margem esquerda da foto) ---------- */
+.caption {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--s-1);
+  text-align: left;
+}
+
+.top {
+  color: var(--c-text);
+}
+
+.text {
+  font-size: var(--t-body);
+  line-height: var(--lh-body);
+  letter-spacing: var(--ls-body);
+  color: var(--c-graphite);
+  text-wrap: pretty;
+}
+
+/* um item por linha */
+.card .items {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  color: var(--c-graphite);
+  line-height: var(--lh-meta-hero);
+}
+
+/* ---------- abaixo de 992px ---------- */
+@media (max-width: 991.98px) {
+  .frame {
+    padding: var(--s-2);
+  }
+
+  .top,
+  .card .items {
+    font-size: var(--t-collection-meta-m);
+    font-weight: 400;
+  }
+
+  .name {
+    font-size: var(--t-collection-name-m);
+  }
+}

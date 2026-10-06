@@ -1,0 +1,122 @@
+/* Botões M e S — medidos em montamont.com (SITE-MESTRE.md §5.1). */
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--btn-gap);
+  border: var(--bw-btn) solid transparent;
+  border-radius: var(--r-btn);
+  background-color: transparent;
+  color: var(--btn-primary);
+  transition:
+    color var(--dur-fast) var(--ease),
+    background-color var(--dur-fast) var(--ease),
+    border-color var(--dur-fast) var(--ease),
+    box-shadow var(--dur-fast) var(--ease);
+}
+
+.label {
+  overflow: hidden;
+  white-space: nowrap;
+  font-family: var(--f-sans);
+  font-weight: var(--w-display);
+  font-feature-settings: "case", "ordn", "dlig";
+}
+
+/* ---------- tamanhos ---------- */
+.m {
+  height: var(--btn-h);
+  padding: var(--pad-btn);
+}
+
+.m .label {
+  font-size: var(--t-button);
+  line-height: var(--lh-button);
+  letter-spacing: var(--ls-button);
+}
+
+.s {
+  height: var(--btn-h-s);
+  padding: var(--pad-btn-s);
+}
+
+.s .label {
+  font-size: var(--t-button-s);
+  line-height: var(--lh-button-s);
+  letter-spacing: var(--ls-button-s);
+}
+
+.l {
+  height: var(--btn-h-l);
+  padding: var(--pad-btn-l);
+}
+
+.l .label {
+  font-size: var(--t-button);
+  line-height: var(--lh-button);
+  letter-spacing: var(--ls-button);
+}
+
+.full {
+  display: flex;
+  width: 100%;
+}
+
+/* ---------- temas ---------- */
+.white {
+  --btn-primary: var(--c-white);
+  --btn-secondary: var(--c-btn-ink);
+  --btn-focus: var(--c-focus-light);
+}
+
+.black {
+  --btn-primary: var(--c-btn-ink);
+  --btn-secondary: var(--c-white);
+  --btn-focus: var(--c-focus-dark);
+}
+
+/* ---------- variantes ---------- */
+.solid {
+  background-color: var(--btn-primary);
+  border-color: var(--btn-primary);
+  color: var(--btn-secondary);
+}
+
+.outline {
+  border-color: var(--btn-primary);
+}
+
+/* vidro: botão secundário sobre foto (hero do venue) */
+.glass {
+  background-color: var(--c-chip-dark);
+  border-color: transparent;
+  color: var(--btn-primary);
+  -webkit-backdrop-filter: blur(var(--blur-glass));
+  backdrop-filter: blur(var(--blur-glass));
+}
+
+/* o original usa box-shadow como anel de foco */
+.button:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 var(--focus-ring) var(--btn-focus);
+}
+
+/* botão desligado (Continue do card Schedule a Tour antes das duas respostas) */
+.button:disabled {
+  opacity: var(--o-disabled);
+  cursor: not-allowed;
+}
+
+@media (hover: hover) {
+  .black.solid:hover:not(:disabled) {
+    background-color: var(--c-btn-dark-hover);
+    border-color: var(--c-btn-dark-hover);
+  }
+
+  .white:hover:not(:disabled) {
+    color: var(--c-btn-ink);
+    background-color: var(--c-btn-hover);
+    border-color: transparent;
+  }
+}

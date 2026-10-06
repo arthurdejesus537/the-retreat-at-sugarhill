@@ -1,0 +1,98 @@
+/* Página The Venue — todos os espaços. Linha do modelo: foto em 7 de 12 colunas e texto ao lado,
+   alternando o lado; no celular a foto vai de borda a borda e o texto fica abaixo, no gutter. */
+
+.head {
+  margin-top: var(--s-8);
+  margin-bottom: var(--s-8);
+}
+
+.eyebrow {
+  margin-bottom: var(--s-2);
+}
+
+.title {
+  max-width: calc(100% * 8 / 12);
+  text-wrap: balance;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-8);
+  padding-inline: var(--gutter);
+}
+
+.item {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: var(--col-gap);
+  align-items: start;
+}
+
+.media {
+  grid-column: 1 / span 7;
+  aspect-ratio: var(--page-photo-ratio);
+}
+
+.text {
+  grid-column: 9 / -1;
+}
+
+/* linhas pares: foto à direita */
+.item:nth-child(even) .media {
+  grid-column: 6 / -1;
+  grid-row: 1;
+}
+
+.item:nth-child(even) .text {
+  grid-column: 1 / span 4;
+  grid-row: 1;
+}
+
+/* espaço sem foto: só o texto, na coluna do texto */
+.item[data-sem-foto] .text {
+  grid-column: 9 / -1;
+}
+
+.uso {
+  margin-bottom: var(--s-2);
+}
+
+.name {
+  margin-bottom: var(--s-4);
+}
+
+.description {
+  margin-bottom: var(--s-4);
+  text-wrap: pretty;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--chip-gap);
+}
+
+/* ---------- abaixo de 992px: foto em cima, texto embaixo ---------- */
+@media (max-width: 991.98px) {
+  .title {
+    max-width: none;
+  }
+
+  .list {
+    gap: var(--s-8);
+    padding-inline: 0;
+  }
+
+  .item {
+    display: block;
+  }
+
+  .media {
+    margin-bottom: var(--card-media-gap);
+  }
+
+  .text {
+    padding-inline: var(--gutter);
+  }
+}
