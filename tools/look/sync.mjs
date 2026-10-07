@@ -15,8 +15,9 @@ import { createHash } from "node:crypto";
 import { execFileSync } from "node:child_process";
 import fs from "node:fs";
 import path from "node:path";
+import { fileURLToPath } from "node:url";
 
-const RAIZ = path.resolve(path.dirname(new URL(import.meta.url).pathname), "../..");
+const RAIZ = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..");
 const ORIGINAIS = path.join(RAIZ, "media/originais");
 const SAIDA = path.join(RAIZ, "public/venue");
 const CONFIG = path.join(RAIZ, "media/look.json");
