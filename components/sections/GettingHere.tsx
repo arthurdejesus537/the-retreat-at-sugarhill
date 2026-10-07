@@ -48,22 +48,24 @@ export function GettingHere({ linkHospedagem = true }: { linkHospedagem?: boolea
         <MapEmbed src={`https://maps.google.com/maps?q=${busca}&z=11&output=embed`} title={`${s.mapa_titulo} — ${endereco}`} className={styles.map} />
       </div>
 
-      <div className={styles.stay}>
-        <h3 className={`t-h3 ${styles.stayTitle}`}>{s.hospedagem.titulo}</h3>
-        <div className={styles.stayBody}>
-          <Placeholder className="t-body">{s.hospedagem.texto}</Placeholder>
-          {perto.length > 0 && (
-            <ul className={`t-meta ${styles.nearby}`}>
-              {perto.map((p) => (
-                <li key={p}>
-                  <Placeholder as="span">{p}</Placeholder>
-                </li>
-              ))}
-            </ul>
-          )}
-          {linkHospedagem && isOn("hospedagem") && <TextLink href={s.hospedagem.link.href}>{s.hospedagem.link.label}</TextLink>}
+      {(s.hospedagem.texto || perto.length > 0 || (linkHospedagem && isOn("hospedagem"))) && (
+        <div className={styles.stay}>
+          <h3 className={`t-h3 ${styles.stayTitle}`}>{s.hospedagem.titulo}</h3>
+          <div className={styles.stayBody}>
+            {s.hospedagem.texto && <Placeholder className="t-body">{s.hospedagem.texto}</Placeholder>}
+            {perto.length > 0 && (
+              <ul className={`t-meta ${styles.nearby}`}>
+                {perto.map((p) => (
+                  <li key={p}>
+                    <Placeholder as="span">{p}</Placeholder>
+                  </li>
+                ))}
+              </ul>
+            )}
+            {linkHospedagem && isOn("hospedagem") && <TextLink href={s.hospedagem.link.href}>{s.hospedagem.link.label}</TextLink>}
+          </div>
         </div>
-      </div>
+      )}
     </section>
   );
 }
