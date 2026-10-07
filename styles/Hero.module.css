@@ -25,6 +25,13 @@
   object-fit: cover;
 }
 
+/* hero.foco_mobile: enquadramento da foto no celular (padrão: centro) */
+@media (max-width: 767.98px) {
+  .image {
+    object-position: var(--hero-foco-mobile, 50% 50%);
+  }
+}
+
 /* poster do clipe 1 (<picture>): a imagem principal, embaixo dos vídeos */
 .poster,
 .poster img {

@@ -1,3 +1,4 @@
+import type { CSSProperties } from "react";
 import Image, { getImageProps } from "next/image";
 import { site } from "@/content/site";
 import { Abertura } from "@/components/ui/Abertura";
@@ -23,6 +24,8 @@ export function Hero() {
   const titulo = val(hero.titulo) ?? "";
   const subtitulo = val(hero.subtitulo);
   const foto = val(hero.foto);
+  // enquadramento opcional da foto no celular (object-position), para tirar o assunto de trás do H1
+  const focoMobile = (hero as { foco_mobile?: string | null }).foco_mobile ?? null;
   const clipes = hero.videos;
   const local = [val(identidade.cidade), val(identidade.estado)].filter(Boolean).join(" — ");
   const legenda = [local, val(hero.regiao), val(numeros.distancia_cidade)].filter(Boolean).map(String);
@@ -40,7 +43,7 @@ export function Hero() {
           </>
         ) : foto ? (
           // LCP da página: carrega com prioridade (VENUE-TEMPLATE §1, item 7)
-          <Image src={foto} alt={hero.foto.alt} fill priority sizes={sizesCobrindo(foto, "(min-width: 992px) 100vw, 100vw", [1.6, 0.46])} quality={QUALIDADE} className={styles.image} />
+          <Image src={foto} alt={hero.foto.alt} fill priority sizes={sizesCobrindo(foto, "(min-width: 992px) 100vw, 100vw", [1.6, 0.46])} quality={QUALIDADE} className={styles.image} style={focoMobile ? ({ "--hero-foco-mobile": focoMobile } as CSSProperties) : undefined} />
         ) : (
           // escuro: o título e os botões são brancos por cima
           <MediaPlaceholder spec={hero.foto.placeholder} tone="dark" className={styles.placeholder} />
