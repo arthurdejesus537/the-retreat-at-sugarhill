@@ -226,7 +226,7 @@ export const placeholders = {
     "[PLACEHOLDER] Meta description da página: cidade + assunto + 1 número real. Máx. 155 caracteres.",
 };
 
-const espaco = (selo: string | null = null): Espaco => ({
+export const espaco = (selo: string | null = null): Espaco => ({
   nome: "[PLACEHOLDER] Nome do espaço",
   uso: "[USO: CERIMÔNIA / RECEPÇÃO / FOTOS / PREPARAÇÃO]",
   descricao: "[PLACEHOLDER] 2 frases sobre como é estar ali.",
@@ -240,7 +240,7 @@ const espaco = (selo: string | null = null): Espaco => ({
   confianca: null,
 });
 
-const pacote = (): Pacote => ({
+export const pacote = (): Pacote => ({
   nome: "[PLACEHOLDER] Nome do pacote",
   preco: '[PLACEHOLDER] Preço "a partir de" (ou "Pricing on your tour")',
   para_quem: "[PLACEHOLDER] Para quem é.",
@@ -258,7 +258,7 @@ const pacote = (): Pacote => ({
   confianca: null,
 });
 
-const hospedagem = (): Hospedagem => ({
+export const hospedagem = (): Hospedagem => ({
   nome: "[PLACEHOLDER] Nome da hospedagem",
   dorme: "[X]",
   no_local: true,
@@ -269,7 +269,7 @@ const hospedagem = (): Hospedagem => ({
   confianca: null,
 });
 
-const depoimento = (destaque = false): Depoimento => ({
+export const depoimento = (destaque = false): Depoimento => ({
   nome: "[Nome]",
   data: "[MARRIED MÊS ANO]",
   texto: "[PLACEHOLDER] Depoimento real, cortado na frase mais forte (máx. 35 palavras).",
@@ -278,7 +278,7 @@ const depoimento = (destaque = false): Depoimento => ({
 });
 
 // ordem das objeções (§4, FAQ): capacidade → preço → bebida → chuva → horário → fornecedores → pets → estacionamento
-const pergunta = (assunto: string, tema: TemaFaq): Pergunta => ({
+export const pergunta = (assunto: string, tema: TemaFaq): Pergunta => ({
   pergunta: `[PLACEHOLDER] Pergunta real sobre ${assunto}`,
   resposta: "[PLACEHOLDER] Resposta em 1–3 frases, com o número exato quando existir.",
   tema,
@@ -311,8 +311,23 @@ export const paginaTemplate = (
 // Conteúdo
 // ---------------------------------------------------------------------------
 
+// fonte "site:<página>" = página do site atual do venue (theretreatatsugarhill.com), capturada em 2026-10-08.
+// "foto:<arquivo>" = o fato aparece nas fotos publicadas no site (fotos/originais da captura).
+const RS = "https://www.theretreatatsugarhill.com";
+const F = (n: string) => `fotos/originais/${n}`;
+
+// "What's Already Included" (/weddings) + FAQ, na ordem de valor para o casal
+const INCLUI_TODOS = [
+  "14-hour rental window, up to 5 hours of ceremony & reception",
+  "Up to 150 guests (151–200 for $500)",
+  "Lakeside arch or garden gazebo ceremony",
+  "Bridal Retreat & Groom's Cabin",
+  "Tables, chairs, setup & breakdown by staff",
+  "Décor room, photo booth & audio guest book",
+];
+
 export const site = {
-  slug: "template",
+  slug: "the-retreat-at-sugarhill",
 
   // idioma e país do site: <html lang>, datas do card Schedule a Tour, <title> e endereço do JSON-LD.
   // EUA: en-US / US / "Wedding Venue in". Brasil: pt-BR / BR / "Espaço para Casamento em".
@@ -332,148 +347,519 @@ export const site = {
   // =====================  dados do venue (venue.json)  =====================
 
   identidade: {
-    nome: campo("[NOME DO VENUE]"),
-    cidade: campo("[CIDADE]"),
-    estado: campo("[UF]"),
-    site: campo<string>(null),
-    email: campo("[E-MAIL]"),
-    // usado nos links tel: e sms: ("Text us")
-    telefone: campo("[TELEFONE]"),
+    nome: campo("The Retreat at Sugarhill", "site:/", "alta"),
+    cidade: campo("Mount Pleasant", "site:rodapé", "alta"),
+    estado: campo("TX", "site:rodapé", "alta"),
+    site: campo(RS, "site:/", "alta"),
+    // o rodapé tem "TheRetreatAtSugarhill..com" e a página de cabanas "thetretreat…" (erros de digitação);
+    // o link mailto do header usa este
+    email: campo("info@theretreatatsugarhill.com", "site:header (mailto)", "alta"),
+    telefone: campo("(903) 921-4320", "site:rodapé, /contact-us", "alta"),
     contato_preferido: campo<string>(null),
-    endereco: campo("[ENDEREÇO COMPLETO]"),
-    instagram: campo("#"),
-    facebook: campo("#"),
-    // caminho do logo; null = nome em texto (secoes.header.fonte_nome)
+    endereco: campo("658 E Farm Road 71, Mount Pleasant, TX 75455", "site:rodapé", "alta"),
+    instagram: campo("https://www.instagram.com/theretreatatsugarhill/", "site:rodapé", "alta"),
+    facebook: campo("https://www.facebook.com/TheRetreatAtSugarhill", "site:rodapé", "alta"),
+    // o logo é largo (galhada + nome em letras finas); a 48px de altura o nome fica ilegível: nome em texto
     logo: campo<string>(null),
-    // versão clara do logo, para foto ou fundo escuro (header transparente, footer); null = usa o logo
     logo_claro: campo<string>(null),
-    // texto do logo quando não há arquivo (ex.: nome curto); null = identidade.nome
-    nome_logo: campo<string>(null),
-    // quem responde o pedido de visita, na frase "<quem> will reach out soon" do card Schedule a Tour
-    // (ex.: "our Venue Director", "Sarah"); null = "We'll reach out soon."
-    quem_responde: campo(placeholders.tourQuemResponde),
+    nome_logo: campo("The Retreat at Sugarhill", "site:/ (logo)", "alta"),
+    // o site não diz quem responde
+    quem_responde: campo<string>(null),
   },
 
+  // desconto real com período: "Jan/Feb, Jul/Aug Special: $350 off" em todas as tarifas (/weddings)
   oferta: {
-    valor: campo(placeholders.oferta),
+    valor: campo("Jan–Feb & Jul–Aug weddings: $350 off", "site:/weddings (Jan/Feb, Jul/Aug Special: $350 off)", "alta"),
     validade: campo<string>(null),
   },
 
   hero: {
-    claim_do_venue: campo<string>(null),
+    claim_do_venue: campo("A waterfront wedding venue on 53 acres in Mount Pleasant, Texas", "site:/", "alta"),
     // legenda do canto: CIDADE — UF / região
-    regiao: campo("[região]"),
-    foto: semFoto("vista principal do venue", "horizontal", "2400px"),
-    // clipes em sequência, na ordem (VENUE-TEMPLATE §2); [] = só a foto
+    regiao: campo("East Texas", "site:/", "alta"),
+    foto: foto(
+      "aerial-pond-and-venue",
+      "The white hall, the lakeside arch and the fire-pit pergola among oaks, seen from across the pond",
+      F("052__9d8d5f_878839dedc924d54a0efc00bc826ca00~mv2.jpg"),
+      "vista do lago",
+      "horizontal",
+      "5464px",
+    ),
+    // celular: o salão e o arco ficam à direita do centro
+    foco_mobile: "60% 50%" as string | null,
     videos: [] as ClipeHero[],
-    // H1 da home: 1 frase na serif, elegante, com a busca do casal (casamento + tipo de lugar + cidade + estado). 5 a 9 palavras.
-    titulo: campo(placeholders.heroTitulo),
-    // opcional: 1 frase abaixo do H1; null = sem subtítulo (padrão, o H1 fica sozinho)
+    titulo: campo("Lakeside weddings on 53 acres in Mount Pleasant, Texas", "site:/ (waterfront, 53 acres, Mount Pleasant)", "alta"),
     subtitulo: campo<string>(null),
   },
 
   numeros: {
-    capacidade_max: campo<number | string>("[000]"),
+    capacidade_max: campo<number | string>(200, "site:/, /faq", "alta"),
     capacidade_sentados: campo<number | string>(null),
-    acres: campo<number | string>("[00]"),
-    ano_fundacao: campo<number | string>("[ANO]"),
-    distancia_cidade: campo<number | string>("[00 MIN]"),
-    // nº de hospedagens para a faixa de números; null = conta as hospedagens no_local
-    hospedagens: campo<number | string>(null),
+    acres: campo<number | string>(53, "site:/", "alta"),
+    // o venue não informa o ano de abertura; o campo leva a área do salão (rótulo em secoes.fatos)
+    ano_fundacao: campo<number | string>("5,250", "site:/faq (Venue 5,250 sq. ft.)", "alta"),
+    // o site só dá "1 hr from either Texarkana or Longview" (vai para Getting Here); sem número da cidade
+    distancia_cidade: campo<number | string>(null),
+    hospedagens: campo<number | string>(3, "site:/ (Yes, 3 cabins are available)", "alta"),
   },
 
-  espacos: [espaco("[DIFERENCIAL Nº 1]"), espaco(), espaco(), espaco()] as Espaco[],
+  espacos: [
+    {
+      nome: "The Reception Hall",
+      uso: "Reception",
+      descricao:
+        "Pine walls, a vaulted ceiling and a wall of windows onto the grounds. The climate-controlled hall is 5,250 sq ft and holds up to 200.",
+      capacidade: "Up to 200",
+      tags: ["Indoor", "Climate-controlled"],
+      selo: "5,250 sq ft",
+      foto: foto(
+        "reception-hall-tables",
+        "The pine-paneled reception hall set with farmhouse tables under a vaulted ceiling",
+        F("056__9d8d5f_4854a7711fae44f885847400ec208544~mv2.jpg"),
+        "salão",
+        "vertical",
+        "7009px",
+      ),
+      descricao_completa:
+        "A 5,250 sq ft climate-controlled hall with pine walls, a vaulted ceiling, ceiling fans and tall windows onto the lawn. Tables for up to 200 guests and 200 chairs are included, along with the venue's farmhouse tables and a one-of-a-kind cake table, set up and broken down by the staff.",
+      fonte: "site:/, /faq, /weddings (foto: /weddings)",
+      confianca: "alta",
+    },
+    {
+      nome: "Lakeside Arch",
+      uso: "Ceremony",
+      descricao: "A white A-frame arch at the edge of the four-acre lake, with the aisle running down to the water.",
+      capacidade: null,
+      tags: ["Outdoor", "Waterfront"],
+      foto: foto(
+        "lakeside-arch-ceremony",
+        "Rows of white chairs facing the white A-frame ceremony arch at the edge of the lake",
+        F("005__9d8d5f_e97262e2ac19432f9619cf70943bbc4f~mv2.jpg"),
+        "arco no lago",
+        "horizontal",
+        "9311px",
+      ),
+      descricao_completa:
+        "Exchange your vows beneath the ceremony arch overlooking the four-acre lake. In the fall, the color of the trees reflects across the water behind you.",
+      fonte: "site:/weddings (The Arch Ceremony, Fall Lakeside Arch), /about-us (four-acre lake)",
+      confianca: "alta",
+    },
+    {
+      nome: "Garden Gazebo",
+      uso: "Ceremony",
+      descricao: "Walk in through the garden doors toward a white gazebo overlooking the lake.",
+      capacidade: null,
+      tags: ["Outdoor", "Waterfront", "Covered"],
+      foto: foto(
+        "garden-doors-gazebo",
+        "Open white garden doors framing an aisle that leads to the white gazebo by the lake",
+        F("026__9d8d5f_e72d661d55534752a04eede81be64b03~mv2.jpg"),
+        "gazebo",
+        "horizontal",
+        "9504px",
+      ),
+      descricao_completa:
+        "Make your entrance through the garden doors and walk toward the gazebo beside the lake. It is the second of the two outdoor ceremony sites.",
+      fonte: "site:/weddings (Garden Gazebo, Garden Gazebo Ceremony Entrance)",
+      confianca: "alta",
+    },
+    {
+      nome: "The Bridal Retreat",
+      uso: "Getting ready",
+      descricao: "Hair and makeup stations, comfortable seating and natural light for the bride and her closest friends.",
+      capacidade: null,
+      tags: ["Indoor", "Vanities", "Natural light"],
+      foto: foto(
+        "bridal-retreat-vanities",
+        "White vanity stations with arched mirrors and a chandelier in the Bridal Retreat",
+        F("041__9d8d5f_bbd605be17254dd6b9c40a7593abd35c~mv2.jpg"),
+        "bridal retreat",
+        "vertical",
+        "2252px",
+      ),
+      descricao_completa:
+        "A private space for the bride and her bridal party, with spacious hair and makeup stations, comfortable seating and natural light. Some packages add two hours of early access.",
+      fonte: "site:/weddings (The Bridal Retreat; 2-hour Early Bridal Suite Access)",
+      confianca: "alta",
+    },
+    {
+      nome: "The Groom's Cabin",
+      uso: "Getting ready",
+      descricao: "A private cabin with a living room, a full kitchen and a bathroom with a shower.",
+      capacidade: null,
+      tags: ["Indoor", "Private", "Full kitchen"],
+      foto: foto(
+        "grooms-cabin-living",
+        "Pine walls and floors in the Groom's Cabin, with a sofa, dining table and kitchen",
+        F("035__9d8d5f_6247e08e0d364b27850b66f70c5bf7b1~mv2.jpg"),
+        "cabana do noivo",
+        "vertical",
+        "2252px",
+      ),
+      descricao_completa:
+        "A comfortable, private cabin for the groom and groomsmen to relax and get ready, with a living room with TV and fireplace, a full kitchen with dining area and a bathroom with a shower.",
+      fonte: "site:/weddings (The Groom's Cabin; legendas das fotos)",
+      confianca: "alta",
+    },
+    {
+      nome: "Swing & Fire Pit Patio",
+      uso: "Cocktails & evening",
+      descricao: "Hanging swings around a fire pit under a white pergola, a few steps from the hall.",
+      capacidade: null,
+      tags: ["Outdoor", "Fire pit"],
+      foto: foto(
+        "swing-fire-pit",
+        "Hanging swings circling a fire pit under a white pergola, framed by tall grasses",
+        F("010__250932_b15e2b7f3d894bc59cf0e662094c70e6~mv2.jpg"),
+        "fogueira",
+        "horizontal",
+        "2048px",
+      ),
+      descricao_completa:
+        "The signature swing-and-fire-pit social patio, with swings hanging from a white pergola around the fire, for cocktail hour and late-night conversations.",
+      fonte: "site:/weddings (signature swing-and-firepit + social patio), /about-us",
+      confianca: "alta",
+    },
+    {
+      nome: "Cocktail Patio",
+      uso: "Cocktail hour",
+      descricao: "A stone patio along the side of the hall, looking out to the lake.",
+      capacidade: null,
+      tags: ["Outdoor", "Patio"],
+      foto: foto(
+        "stone-patio-hall",
+        "A round stone patio beside the hall's tall windows, with the lake behind the trees",
+        F("118__250932_c5fe56adb9cc4b87812dd8d1fc960265~mv2.jpg"),
+        "pátio",
+        "horizontal",
+        "2048px",
+      ),
+      descricao_completa: "Cocktail hour patio space beside the hall, with views toward the water.",
+      so_na_pagina: true,
+      fonte: "site:/weddings (meta: cocktail hour patio space)",
+      confianca: "media",
+    },
+    {
+      nome: "The Chapel (coming soon)",
+      uso: "Ceremony",
+      descricao: "A new waterside chapel with a cathedral ceiling, now under construction.",
+      capacidade: null,
+      tags: ["Indoor", "Waterfront", "Coming soon"],
+      descricao_completa:
+        "Under construction now: a chapel positioned to face the water, with a soaring cathedral ceiling and a 16-foot entry vestibule with sliding doors for the wedding party's entrance.",
+      so_na_pagina: true,
+      fonte: "site:/weddings (The Chapel - Coming Soon)",
+      confianca: "alta",
+    },
+  ] as Espaco[],
 
-  pacotes: [pacote(), pacote(), pacote()] as Pacote[],
-  preco_a_partir_de: campo<string>(null),
+  // /weddings, "Investment": aluguel por dia, janela de 14 h, até 150 convidados
+  pacotes: [
+    {
+      nome: "Weekday",
+      preco: "$2,900",
+      para_quem: "Monday, Tuesday or Wednesday, with the same venue and inclusions.",
+      inclui: INCLUI_TODOS,
+      destaque: false,
+      convidados: 150,
+      fonte: "site:/weddings",
+      confianca: "alta",
+    },
+    {
+      nome: "Friday or Sunday",
+      preco: "From $3,800",
+      para_quem: "Sunday $3,800 · Friday $4,000.",
+      inclui: INCLUI_TODOS,
+      destaque: false,
+      convidados: 150,
+      fonte: "site:/weddings",
+      confianca: "alta",
+    },
+    {
+      nome: "Saturday",
+      preco: "$4,800",
+      para_quem: "The classic Saturday wedding.",
+      inclui: INCLUI_TODOS,
+      destaque: false,
+      convidados: 150,
+      fonte: "site:/weddings",
+      confianca: "alta",
+    },
+    {
+      nome: "Two-Day Weekend",
+      preco: "From $5,625",
+      para_quem: "Thu–Fri $5,625 · Fri–Sat $7,800. Set up and host the rehearsal dinner the day before.",
+      inclui: [
+        "Arrive the day before to set up",
+        "Host your rehearsal dinner on site",
+        "Overnight lodging",
+        "Wake up with everything already arranged",
+        ...INCLUI_TODOS,
+      ],
+      // o site chama de "MOST POPULAR ADD-ON"
+      destaque: true,
+      convidados: 150,
+      fonte: "site:/weddings (Turn Your Wedding Into a Two-Day Experience)",
+      confianca: "alta",
+    },
+  ] as Pacote[],
+  preco_a_partir_de: campo("$2,900", "site:/weddings", "alta"),
   adicionais: [
-    { item: "[PLACEHOLDER] Adicional real — ex.: heaters", preco: "[PREÇO]", fonte: null },
-    { item: "[Adicional]", preco: "[PREÇO]", fonte: null },
-    { item: "[Adicional]", preco: "[PREÇO]", fonte: null },
-    { item: "[Adicional]", preco: "[PREÇO]", fonte: null },
-    { item: "[Adicional]", preco: null, fonte: null },
+    { item: "Guests 151–200", preco: "$500", fonte: "site:/weddings" },
+    {
+      item: "Simply Sugarhill: rehearsal & ceremony coordination, DJ, bartender, Titus County security",
+      preco: null,
+      fonte: "site:/weddings",
+    },
+    {
+      item: "The Perfect Beginning: adds month-of + day-of coordination, early bridal suite access, audio guest book, charger plates",
+      preco: null,
+      fonte: "site:/weddings",
+    },
+    {
+      item: "The Signature Experience: adds décor styling and setup, premium décor and white linens",
+      preco: null,
+      fonte: "site:/weddings",
+    },
+    {
+      item: "The Grand: multi-day rental and lodging, catered dinner, three-tier cake, florals and the honeymoon suite",
+      preco: null,
+      fonte: "site:/weddings",
+    },
   ] as Adicional[],
 
-  inclusos: [] as Campo[],
-  nao_inclusos: [] as Campo[],
+  inclusos: [
+    campo("14-hour rental window, with up to five hours for the ceremony and reception", "site:/weddings", "alta"),
+    campo("Up to 150 guests (151–200 for $500)", "site:/weddings", "alta"),
+    campo("Choice of ceremony site: lakeside arch or garden gazebo", "site:/weddings", "alta"),
+    campo("Tables for up to 200 guests and 200 chairs, plus farmhouse tables and a cake table", "site:/faq, /weddings", "alta"),
+    campo("Custom setup and breakdown by the staff", "site:/weddings", "alta"),
+    campo("Access to the décor room at no extra charge", "site:/weddings, /faq", "alta"),
+    campo("Bridal Retreat and Groom's Cabin", "site:/weddings", "alta"),
+    campo("Photo booth, greenery wall and audio guest book", "site:/weddings", "alta"),
+    campo("Sound system with handheld and lavalier microphones", "site:/faq", "alta"),
+    campo("A manager on the property on your day", "site:/faq", "alta"),
+  ] as Campo[],
+  nao_inclusos: [
+    campo("TABC-certified, insured bartender and approved security, if you serve alcohol", "site:/faq", "alta"),
+    campo("Event liability insurance with host liquor liability coverage", "site:/faq", "alta"),
+    campo("Coordination and DJ (included in the all-inclusive packages)", "site:/weddings", "alta"),
+    campo("Refundable security deposit", "site:/faq", "alta"),
+  ] as Campo[],
   inventario: {
-    mesas: campo<string>(null),
-    cadeiras: campo<string>(null),
-    bancos: campo<string>(null),
+    mesas: campo("Tables for up to 200 guests, farmhouse tables and a cake table", "site:/faq, /weddings", "alta"),
+    cadeiras: campo("200 chairs", "site:/faq", "alta"),
+    decoracao: campo("Décor room with a large décor collection", "site:/weddings", "alta"),
   },
 
   politicas: {
-    bebida: campo<string>(null),
+    bebida: campo(
+      "Alcohol is allowed with an approved TABC-certified, insured professional bartender; approved security and event liability insurance with host liquor liability coverage are required.",
+      "site:/faq",
+      "alta",
+    ),
     horario_fim: campo<string>(null),
-    som: campo<string>(null),
+    som: campo("Sound system with a handheld and a lavalier microphone for the outdoor ceremony area and the indoor venue", "site:/faq", "alta"),
     plano_chuva: campo<string>(null),
     estacionamento: campo<string>(null),
-    fornecedores: campo<string>(null),
+    fornecedores: campo("You may choose your own vendors without additional fees", "site:/faq", "alta"),
     animais: campo<string>(null),
+    decoracao: campo("No nails, staples or anything that would damage the venue", "site:/faq", "alta"),
   },
 
-  hospedagem: [hospedagem(), hospedagem(), hospedagem(), hospedagem()] as Hospedagem[],
-  // selo opcional da hospedagem (ex.: prêmio real); null = não aparece
+  // /cabin-rentals-mt-pleasant-tx e /weddings (The Grand)
+  hospedagem: [
+    {
+      nome: "The Bridal Retreat",
+      dorme: null,
+      no_local: true,
+      descricao: "With a two-day booking, the bridal party can stay the night before and wake up where they get ready.",
+      foto: foto(
+        "bridal-retreat-lounge",
+        "The Bridal Retreat's sitting area with a chandelier, a fireplace wall and tall windows",
+        F("040__9d8d5f_2871a418f7e04e1ba1ff61e06a490200~mv2.jpg"),
+        "bridal retreat",
+        "horizontal",
+        "2252px",
+      ),
+      link_reserva: null,
+      fonte: "site:/weddings (Overnight Lodging: Bridal Retreat + Groom's Cabin night before)",
+      confianca: "alta",
+    },
+    {
+      nome: "The Groom's Cabin",
+      dorme: null,
+      no_local: true,
+      descricao: "Living room with a TV and fireplace, a full kitchen and a bathroom with a shower, for the night before.",
+      foto: foto(
+        "grooms-cabin-tv-room",
+        "The Groom's Cabin living room with a gray sofa, pine walls and a stone fireplace",
+        F("037__9d8d5f_34b5350d2e2d4e4d9ea79e6102436da3~mv2.jpg"),
+        "cabana do noivo",
+        "horizontal",
+        "2252px",
+      ),
+      link_reserva: null,
+      fonte: "site:/weddings",
+      confianca: "alta",
+    },
+    {
+      nome: "Guest Cabins",
+      dorme: null,
+      no_local: true,
+      descricao: "Three cabins on the property for your guests, with a private BBQ area, a fire pit and stocked ponds.",
+      foto: foto(
+        "guest-cabin-bedroom",
+        "A cabin bedroom with pine walls, a ceiling fan and a red plaid quilt",
+        F("084__9d8d5f_16a3ab405dc94fc4af8f47e12aada009~mv2.jpg"),
+        "cabana",
+        "horizontal",
+        "4032px",
+      ),
+      link_reserva: "https://airbnb.com/h/theretreatatsugarhill",
+      fonte: "site:/ (3 cabins), /cabin-rentals-mt-pleasant-tx",
+      confianca: "alta",
+    },
+  ] as Hospedagem[],
   hospedagem_selo: campo<string>(null),
 
-  // Getting Here: tempos de carro a partir de identidade.endereco (3 a 5, com o aeroporto mais próximo)
+  // Getting Here: os tempos são os que o próprio site informa (FAQ da home)
   como_chegar: {
     destinos: [
-      { destino: "[Centro da cidade]", tempo: "[00 min]", fonte: null, confianca: null },
-      { destino: "[Aeroporto mais próximo]", tempo: "[00 min]", fonte: null, confianca: null },
-      { destino: "[Cidade ou atração próxima]", tempo: "[00 min]", fonte: null, confianca: null },
+      { destino: "Sulphur Springs", tempo: "30 min", fonte: "site:/ (Only 1/2 hour from Sulphur Springs)", confianca: "media" },
+      { destino: "Texarkana", tempo: "1 hr", fonte: "site:/ (1 hr from either Texarkana or Longview)", confianca: "alta" },
+      { destino: "Longview", tempo: "1 hr", fonte: "site:/ (1 hr from either Texarkana or Longview)", confianca: "alta" },
     ] as Destino[],
-    // hotéis ou cidades próximas que o próprio venue cita; vazio = a linha some
-    proximos: [campo("[Hotéis em cidade próxima]")] as Campo[],
+    proximos: [campo("Hotels in Mt. Pleasant, close to the highway", "site:/", "alta")] as Campo[],
   },
 
-  // null = fallback padrão Inquire → Tour → Book (secoes.processo.fallback)
   processo: [
-    campo("[PLACEHOLDER] Consulta: quem responde e em quanto tempo."),
-    campo("[PLACEHOLDER] Visita: presencial ou virtual."),
-    campo("[PLACEHOLDER] O fim de semana."),
+    campo("Every price is posted. Pick your day, then call (903) 921-4320 or email info@theretreatatsugarhill.com.", "site:/weddings, /contact-us", "alta"),
+    campo("Book a tour and walk the hall, both ceremony sites and the cabins.", "site:/contact-us (Schedule Tour)", "alta"),
+    campo("On the day, the staff sets up your tables and chairs and a manager stays on the property.", "site:/weddings, /faq", "alta"),
   ] as Campo[] | null,
 
   faq: [
-    pergunta("capacidade", "capacidade"),
-    pergunta("preço", "preco"),
-    pergunta("bebida", "bebida"),
-    pergunta("chuva", "chuva"),
-    pergunta("horário", "horario"),
-    pergunta("fornecedores", "fornecedores"),
-    pergunta("pets", "pets"),
-    pergunta("estacionamento", "estacionamento"),
+    {
+      pergunta: "How many guests can the venue hold?",
+      resposta: "The 5,250 sq ft hall holds up to 200 guests. Rentals include up to 150; 151 to 200 guests is a $500 add-on.",
+      tema: "capacidade",
+      fonte: "site:/faq, /weddings",
+    },
+    {
+      pergunta: "How much is a wedding?",
+      resposta:
+        "Weekdays are $2,900, Sundays $3,800, Fridays $4,000 and Saturdays $4,800, each with a 14-hour rental window. Jan/Feb and Jul/Aug dates are $350 off, and there are no hidden fees or gratuity charges.",
+      tema: "preco",
+      fonte: "site:/weddings",
+    },
+    {
+      pergunta: "Can we serve alcohol?",
+      resposta:
+        "Yes, with an approved TABC-certified, insured professional bartender. Approved security and event liability insurance with host liquor liability coverage are required.",
+      tema: "bebida",
+      fonte: "site:/faq",
+    },
+    {
+      pergunta: "When can we set up and clean up?",
+      resposta: "Access depends on your package. With the weekend package, setup can begin at 8am Friday and cleanup runs until 3pm Sunday.",
+      tema: "horario",
+      fonte: "site:/faq",
+    },
+    {
+      pergunta: "Can guests stay overnight?",
+      resposta: "Yes. Three cabins are available on the property, and the hotels in Mt. Pleasant are close to the highway.",
+      tema: "hospedagem",
+      fonte: "site:/",
+    },
+    {
+      pergunta: "Can we bring our own vendors?",
+      resposta: "Yes. You may choose your own vendors without being charged additional fees.",
+      tema: "fornecedores",
+      fonte: "site:/faq",
+    },
+    {
+      pergunta: "Can we decorate?",
+      resposta:
+        "Decorate as you wish, and use the venue's décor room at no extra charge. Nails, staples or anything that would damage the venue aren't allowed.",
+      fonte: "site:/faq",
+    },
+    {
+      pergunta: "Is there a sound system?",
+      resposta: "Yes, with a handheld and a lavalier microphone, for both the outdoor ceremony area and the indoor venue.",
+      fonte: "site:/faq",
+    },
+    {
+      pergunta: "Is there a security deposit?",
+      resposta: "Yes, a refundable security deposit is required.",
+      fonte: "site:/faq",
+    },
   ] as Pergunta[],
 
   historia: {
-    origem: campo<string>(null),
-    donos: campo<string>(null),
-    diferencial: campo<string>(null),
+    origem: campo(
+      "Family owned and operated; every detail of the property was thought of with the couple's and guests' experience in mind.",
+      "site:/about-us",
+      "alta",
+    ),
+    // os donos aparecem por nome nos depoimentos (/gallery: "the owners - Crystal and Sean")
+    donos: campo("Crystal and Sean", "site:/gallery, /cabin-rentals-mt-pleasant-tx (depoimentos)", "media"),
+    diferencial: campo(
+      "Four-acre lake with two outdoor ceremony sites, a climate-controlled hall and cabins on 53 acres.",
+      "site:/, /about-us",
+      "alta",
+    ),
   },
 
-  depoimentos: [depoimento(true), depoimento(), depoimento()] as Depoimento[],
+  // depoimentos de casais (/gallery) e de um hóspede das cabanas, cortados sem reescrever
+  depoimentos: [
+    {
+      nome: "Bailey",
+      data: null,
+      texto:
+        "They made the day a million times easier and the venue is just gorgeous! I couldn’t picture a better place to say I Do!",
+      destaque: true,
+      fonte: "site:/gallery",
+    },
+    {
+      nome: "Lisa Driver, MI",
+      data: null,
+      texto:
+        "…what truly sets this place apart from every other place we spoke to and visited is the owners - Crystal and Sean.",
+      fonte: "site:/gallery",
+    },
+    {
+      nome: "Shawn",
+      data: null,
+      texto: "I couldn't have asked for a more perfect day, the property is gorgeous, the pictures on the website don't do it justice…",
+      fonte: "site:/gallery",
+    },
+    {
+      nome: "Carlos, cabin guest",
+      data: null,
+      texto:
+        "My wife and I have traveled to many different locations around the world and never experienced such amazing hospitality. Crystal and Sean go above and beyond.",
+      fonte: "site:/cabin-rentals-mt-pleasant-tx",
+    },
+  ] as Depoimento[],
 
-  imprensa: [
-    { nome: "[Publicação]", logo: null, link: null, fonte: null },
-    { nome: "[Publicação]", logo: null, link: null, fonte: null },
-    { nome: "[Publicação]", logo: null, link: null, fonte: null },
-    { nome: "[Publicação]", logo: null, link: null, fonte: null },
-  ] as Imprensa[],
+  imprensa: [] as Imprensa[],
 
   galeria: {
     mapa: null as string | null,
-    // alturas iguais, larguras variadas: o formato decide a largura de cada foto
     fotos: [
-      semFoto("cerimônia", "horizontal", "1200px"),
-      semFoto("detalhe", "vertical", "1200px"),
-      semFoto("recepção à noite", "horizontal", "1200px"),
-      semFoto("casal", "vertical", "1200px"),
-      semFoto("espaço vazio de dia", "horizontal", "1200px"),
-      semFoto("detalhe", "quadrada", "1200px"),
-      semFoto("mesa posta", "horizontal", "1200px"),
-      semFoto("casal", "vertical", "1200px"),
-      semFoto("vista do venue", "horizontal", "1200px"),
-      semFoto("pista de dança", "quadrada", "1200px"),
+      foto("couple-gazebo-kiss", "A bride and groom kissing inside the white gazebo, the lake behind them", F("046__9d8d5f_fa4c3be81e7c4e7d8101bcfb2a037030~mv2.jpg"), "gazebo", "vertical"),
+      foto("garden-gazebo-chairs", "White chairs set in rows on the lawn facing the gazebo by the lake", F("053__9d8d5f_4ed3f56dfabd443a875f4215b7d2b60f~mv2.jpg"), "gazebo", "horizontal"),
+      foto("couple-fall-lake", "A couple embracing at the lake's edge with fall trees reflected in the water", F("015__9d8d5f_e3b1fc9284d842bcb49b73faa3840d54~mv2.jpg"), "lago no outono", "horizontal"),
+      foto("reception-long-tables", "Long tables with white linens and gold chargers in front of the hall's tall windows", F("022__9d8d5f_4dcfb2846937467ca1df7b2566cd8326~mv2.jpg"), "recepção", "horizontal"),
+      foto("arch-dress-hanging", "A wedding gown hanging from the white arch over the deck by the lake", F("043__9d8d5f_45df02eb8d7143d18ba94712fdd550f5~mv2.jpg"), "vestido no arco", "vertical"),
+      foto("fall-arch-florals", "The ceremony deck in fall, with pampas and pink florals on the arch posts", F("016__9d8d5f_ae38a16d35bc43cf9a05b8b7fc783427~mv2.jpg"), "arco no outono", "horizontal"),
+      foto("lantern-table-lake", "A white lantern on a cocktail table under the patio roof, the lake beyond", F("049__9d8d5f_7796c68c884247e08d1ab4b2a5ba1b14~mv2.jpg"), "detalhe", "horizontal"),
+      foto("greenery-wall", "The greenery wall with a neon 'You + Me' sign", F("011__250932_02ea1fc8941d4aee8da1565e9dea4d1f~mv2.jpg"), "parede verde", "vertical"),
+      foto("couple-sunset-field", "A groom in a cowboy hat dipping his bride for a kiss in a field at sunset", F("048__9d8d5f_74ce02d014124e7e9c567d4f4a45decf~mv2.jpg"), "pôr do sol", "horizontal"),
+      foto("audio-guest-book", "A vintage telephone audio guest book on a barrel table", F("055__9d8d5f_b7c4e7fedb304d83adc5e7076f305d6e~mv2.jpg"), "audio guest book", "horizontal"),
+      foto("hall-barn-doors", "The white hall with wooden barn doors and a lawn in front", F("081__250932_2539e05bcfbd48dc8a528954b835a0a5~mv2.jpg"), "salão por fora", "horizontal"),
+      foto("white-horse-pasture", "A white horse grazing in a pasture under tall trees on the property", F("107__9d8d5f_2cdb8eb5715249ce8b38a16aa159689e~mv2.jpg"), "cavalo", "horizontal"),
     ],
   },
 
@@ -483,20 +869,16 @@ export const site = {
 
   // =====================  seções: liga/desliga + copy de seção  =====================
 
-  // CTA primário do site inteiro (§1): header, hero, mobile bar, footer. "/?tour" abre o card
-  // Schedule a Tour (TourProvider intercepta todo link com esse href; lib/tour.ts, TOUR_HREF)
   cta: { label: "Schedule a Tour", href: "/?tour" } as Link,
 
   secoes: {
     anuncio: {
       enabled: true,
-      link: { label: "Check your date", href: "/?tour" } as Link,
+      link: { label: "See rates", href: "/packages" } as Link,
     },
     header: {
       enabled: true,
-      // cada link some junto com a seção que ele aponta
       nav: [
-        // pagina: com a página interna ligada, o link vai para ela; senão, para a âncora da home
         { label: "The Venue", href: "/#the-venue", secao: "historia", pagina: "the_venue" },
         { label: "Packages", href: "/#packages", secao: "pacotes", pagina: "packages" },
         { label: "Stay", href: "/#stay", secao: "hospedagem", pagina: "stay" },
@@ -504,22 +886,15 @@ export const site = {
       ] as { label: string; href: string; secao: string; pagina?: string }[],
       text_us: "Text us",
       menu: "Menu",
-      // fonte do nome em texto no lugar do logo: "serif" (padrão) ou "sans"
       fonte_nome: "serif" as "serif" | "sans",
     },
-    // abertura "A Janela" da home, na 1ª visita da sessão: o nome se abre ao meio e uma janela
-    // com o clipe 1 do hero cresce até virar o hero; nas páginas internas, só a entrada do título
     abertura: {
       enabled: true,
-      // nome grande na serif; null = identidade.nome_logo (ou identidade.nome)
-      nome: null as string | null,
-      // onde o nome se divide: o começo dele (ex.: "Willow" em "Willow Creek");
-      // null = na palavra do meio (nome de uma palavra: no meio das letras)
-      divisao: null as string | null,
+      nome: "Sugarhill",
+      divisao: "Sugar",
     },
     hero: {
       enabled: true,
-      // o primário é o site.cta
       secundario: { label: "See Packages", href: "#packages" } as Link,
     },
     fatos: {
@@ -528,24 +903,23 @@ export const site = {
         capacidade_max: "Guests",
         capacidade_sentados: "Seated",
         acres: "Acres",
-        ano_fundacao: "Established",
-        distancia_cidade: "From downtown",
-        hospedagens: "Stays on site",
+        ano_fundacao: "Sq ft, climate-controlled hall",
+        distancia_cidade: "From Texarkana or Longview",
+        hospedagens: "Cabins for guests",
       },
     },
     historia: {
       enabled: true,
-      texto: placeholders.historia,
-      // "Our Story →" se houver página; senão o CTA
-      link: { label: "Schedule a Tour →", href: "/?tour" } as Link,
+      texto:
+        "The Retreat at Sugarhill is a family-owned venue on 53 acres outside Mount Pleasant, run by Crystal and Sean. A four-acre lake sits at the center, with a lakeside arch and a garden gazebo for your vows and a 5,250 sq ft climate-controlled hall for up to 200. Every price is posted, with no hidden fees or gratuity, and cabins on the property let your people stay the weekend. Come see it on a tour.",
+      link: { label: "Explore the venue →", href: "/the-venue" } as Link,
     },
     espacos: {
       enabled: true,
       eyebrow: "The Spaces",
-      titulo: placeholders.espacosTitulo,
+      titulo: "Two ceremony sites, one lake.",
       link: { label: "Schedule a Tour →", href: "/?tour" } as Link,
       ver: "Tour it",
-      // página The Venue: título da lista com todos os espaços, abaixo da seção da home
       todos: "Every space, in detail",
     },
     fim_de_semana: {
@@ -553,60 +927,54 @@ export const site = {
       titulo: "Your Wedding Weekend",
       cards: [
         {
-          momento: "Before",
-          titulo: "[PLACEHOLDER] Título curto",
-          frase: "[PLACEHOLDER] 1 frase sobre ensaio, arrumação, chegada.",
-          itens: ["[Item incluído]", "[Item incluído]", "[Item incluído]"],
-          foto: semFoto("arrumação ou ensaio", "vertical", "1600px"),
-          // loop por cima da foto (null = só a foto)
+          momento: "The day before",
+          titulo: "Set up and stay",
+          frase: "Arrive a day early to set up, host your rehearsal dinner and spend the night on the property.",
+          itens: ["Rehearsal dinner space", "Overnight lodging", "Thu–Fri $5,625 · Fri–Sat $7,800"],
+          foto: foto("grooms-cabin-sofa", "A sectional sofa in the pine-walled Groom's Cabin, with the kitchen beyond", F("034__9d8d5f_558433ac25bc48cfab3531bec6a39cc5~mv2.jpg"), "cabana", "vertical"),
           video: null as LoopSecao | null,
         },
         {
-          momento: "The Day",
-          titulo: "[PLACEHOLDER] Título curto",
-          frase: "[PLACEHOLDER] 1 frase sobre cerimônia, recepção, equipe.",
-          itens: ["[Item incluído]", "[Item incluído]", "[Item incluído]"],
-          foto: semFoto("cerimônia", "vertical", "1600px"),
-          // loop por cima da foto (null = só a foto)
+          momento: "The day",
+          titulo: "Vows by the water",
+          frase: "Say your vows at the lakeside arch or the garden gazebo, then move into the hall for dinner and dancing.",
+          itens: ["14-hour rental window", "Setup & breakdown by staff", "Sound system with mics"],
+          foto: foto("couple-fall-lake", "A couple embracing at the lake's edge with fall trees reflected in the water", F("015__9d8d5f_e3b1fc9284d842bcb49b73faa3840d54~mv2.jpg"), "lago no outono", "vertical"),
           video: null as LoopSecao | null,
         },
         {
-          momento: "After",
-          titulo: "[PLACEHOLDER] Título curto",
-          frase: "[PLACEHOLDER] 1 frase sobre noite no local, café, check-out.",
-          itens: ["[Item incluído]", "[Item incluído]", "[Item incluído]"],
-          foto: semFoto("manhã seguinte", "vertical", "1600px"),
-          // loop por cima da foto (null = só a foto)
+          momento: "The night",
+          titulo: "Golden hour to last dance",
+          frase: "Portraits in the field at sunset, the photo booth and the swings around the fire pit.",
+          itens: ["Photo booth", "Audio guest book", "Honeymoon suite with The Grand"],
+          foto: foto("couple-sunset-field", "A groom in a cowboy hat dipping his bride for a kiss in a field at sunset", F("048__9d8d5f_74ce02d014124e7e9c567d4f4a45decf~mv2.jpg"), "pôr do sol", "vertical"),
           video: null as LoopSecao | null,
         },
       ],
-      final: { label: "See what's included →", href: "#packages" } as Link,
+      final: { label: "See the packages →", href: "#packages" } as Link,
     },
     pacotes: {
       enabled: true,
-      titulo: placeholders.pacotesTitulo,
+      titulo: "Weddings from $2,900",
       sem_preco: "Pricing on your tour",
       mais: "more",
       botao: "Check This Date",
-      selo: "Most chosen",
+      selo: "Most popular",
       adicionais: "Add-ons",
-      // acordeão com a lista completa de adicionais, na própria seção
       adicionais_abrir: "See all add-ons",
-      // blocos só da página Packages
       pagina: {
-        oferta: "Limited offer",
-        // título da grade com a lista completa, abaixo da seção da home
-        completo: "Everything in each package",
+        oferta: "Seasonal special",
+        completo: "Included with every rental",
         nao_incluso: "Not included",
         faq_titulo: "Price, drinks and guest count",
-        // perguntas do FAQ que a página repete, pelo tema
         faq_temas: ["preco", "bebida", "capacidade"] as TemaFaq[],
       },
     },
     hospedagem: {
       enabled: true,
-      titulo: "[PLACEHOLDER] Título sobre ficar no local",
-      texto: "[PLACEHOLDER] 1 frase.",
+      titulo: "Stay the whole weekend",
+      texto:
+        "The bridal party and the groomsmen can stay the night before, and three cabins on the property are there for your guests. The Grand package adds a honeymoon suite for your wedding night.",
       dorme: "Sleeps",
       grupos: { no_local: "Also on site", proximo: "Nearby", sem_dado: "More places to stay" },
       reservar: "Book",
@@ -619,8 +987,7 @@ export const site = {
       enabled: true,
       eyebrow: "How It Works",
       titulo: "Three steps to your date",
-      foto: semFoto("venue em luz de fim de tarde", "horizontal", "2400px"),
-      // loop por cima da foto (null = só a foto)
+      foto: foto("hall-patio-pergola", "The white hall, the fire-pit pergola and the lakeside arch on a summer day", F("072__9d8d5f_c31da9ec4f424f7d96d24d66a7daafd4~mv2.jpg"), "propriedade", "horizontal", "5464px"),
       video: null as LoopSecao | null,
       fallback: ["Inquire", "Tour", "Book"],
     },
@@ -628,51 +995,42 @@ export const site = {
       enabled: true,
       titulo: "Good to know",
     },
-    // opcional; precisa de identidade.endereco
     como_chegar: {
       enabled: true,
       eyebrow: "Getting Here",
-      titulo: "[PLACEHOLDER] Título curto sobre chegar ao venue",
-      texto: "[PLACEHOLDER] 1 frase: o que fica perto e em quanto tempo.",
+      titulo: "Between Texarkana and Sulphur Springs",
+      texto: "On Farm Road 71 in Mount Pleasant, close to the highway and the town's hotels.",
       mapa_link: "Open in Google Maps",
       mapa_titulo: "Map",
       hospedagem: {
         titulo: "Where guests stay",
-        texto: placeholders.comoChegarHospedagem,
-        link: { label: "See places to stay →", href: "#stay" } as Link,
+        texto: "Three cabins on the property for your guests.",
+        link: { label: "See the cabins →", href: "#stay" } as Link,
       },
     },
     galeria: {
       enabled: true,
       titulo: "Gallery",
-      // abre a lightbox com todas as fotos; só aparece com mais de 12 (a faixa mostra 12)
       link: "See the full gallery →",
     },
     checar_data: {
       enabled: true,
-      titulo: placeholders.checarTitulo,
-      apoio: placeholders.checarApoio,
-      foto: semFoto("venue ao entardecer", "horizontal", "2400px"),
+      titulo: "Is your date still open?",
+      apoio: "Send your date and guest count, or call (903) 921-4320.",
+      foto: foto("chairs-facing-arch", "White chairs on the lawn facing the A-frame arch and the lake", F("024__9d8d5f_77a7fd8af88f4dd28f0f0c7c92c06420~mv2.jpg"), "cerimônia", "horizontal", "7008px"),
     },
-    // card Schedule a Tour (components/tour/): aberto por todo CTA do site, em 3 páginas —
-    // quando + convidados · contato · obrigado. É o CTA do site: não desligar.
     tour: {
       enabled: true,
       titulo: "Schedule a Tour",
-      // fotos ao lado do formulário (768px ou mais; no celular o card fica só com o formulário),
-      // em loop de 4s com tracinhos; cada uma com o seu título em branco por cima.
-      // [] = card sem foto; 1 foto = fixa, sem tracinhos
       fotos: [
-        { foto: semFoto("interior do venue", "vertical", "1200px"), titulo: placeholders.tourFotoTitulo },
-        { foto: semFoto("casal no venue", "vertical", "1200px"), titulo: placeholders.tourFotoTitulo },
-        { foto: semFoto("recepção ao entardecer", "vertical", "1200px"), titulo: placeholders.tourFotoTitulo },
+        { foto: foto("couple-gazebo-kiss", "A bride and groom kissing inside the white gazebo, the lake behind them", F("046__9d8d5f_fa4c3be81e7c4e7d8101bcfb2a037030~mv2.jpg"), "gazebo", "vertical"), titulo: "Come walk the lake with us." },
+        { foto: foto("garden-doors-florals", "White garden doors with florals opening onto the path to the gazebo", F("029__9d8d5f_6913b32e8dd34c98851c60c0ba6a72bb~mv2.jpg"), "portas do jardim", "vertical"), titulo: "We'd love to show you around." },
+        { foto: foto("arch-pampas-aisle", "The white A-frame arch decorated with pampas and roses at the end of a wooden aisle", F("019__9d8d5f_959ef20e90384fabb7e860bbe0079a8e~mv2.jpeg"), "arco", "vertical"), titulo: "See both ceremony sites." },
       ] as { foto: Foto; titulo: string }[],
       quando: "When are you thinking?",
-      // estações depois dos próximos 4 meses: primavera, verão, outono, inverno
       estacoes: ["Spring", "Summer", "Fall", "Winter"] as [string, string, string, string],
       flexivel: "Still flexible",
       convidados: "How many guests?",
-      // 1ª faixa: "Under 50"
       abaixo: "Under",
       continuar: "Continue",
       contato: "Where can we reach you?",
@@ -686,35 +1044,27 @@ export const site = {
       voltar: "Back",
       enviar: "Send",
       enviando: "Sending…",
-      // página 3; {nome} = primeiro nome de quem enviou
       obrigado: {
         titulo: "Thank you, {nome}.",
-        texto: placeholders.tourObrigado,
-        // "<identidade.quem_responde> will reach out soon." / sem quem_responde:
+        texto: "We have your note and will be in touch to set up your tour of The Retreat at Sugarhill.",
         retorno: "will reach out soon.",
         retorno_sem_nome: "We'll reach out soon.",
-        // + telefone (sms:)
         mensagem: "For the quickest reply, text",
         convidados: "guests",
       },
       fechar: "Back to the site",
       recomecar: "Start over",
       rotulo_fechar: "Close",
-      // barra de status na base do card
       progresso: "Progress",
     },
     footer: {
       enabled: true,
-      // último link grande: abre o card Schedule a Tour
       checar: { label: "Check Your Date", href: "/?tour" } as Link,
       visite: "Visit",
       contato: "Contact",
       siga: "Follow",
-      // bloco opcional; some se imprensa estiver vazia
-      imprensa: { enabled: true, label: "As featured in" },
-      // null = o crédito some
-      credito: { label: "Website by [SUA MARCA]", href: "#" } as Link | null,
-      // crédito exigido pela licença gratuita da Skiper UI (cursor dos campos do card); null = some
+      imprensa: { enabled: false, label: "As featured in" },
+      credito: null as Link | null,
       creditos_ui: { label: "Interface components by Skiper UI", href: "https://skiper-ui.com" } as Link | null,
     },
     barra_mobile: {
@@ -724,23 +1074,100 @@ export const site = {
   },
 
   // =====================  páginas internas  =====================
-  // hero · apresentação · legendas · bloco da página · prova social · Check Your Date
   paginas: {
-    the_venue: paginaTemplate("/the-venue", "The Venue", "Explore the venue →", 0, "o venue inteiro (fachada ou vista aérea)"),
-    packages: paginaTemplate("/packages", "Packages", "See all packages →", 1, "recepção montada e cheia"),
-    stay: paginaTemplate("/stay", "Stay", "See all stays →", 2, "hospedagem principal por fora"),
+    the_venue: {
+      enabled: true,
+      href: "/the-venue",
+      nome: "The Venue",
+      link_home: "Explore the venue →",
+      titulo: "Built around the lake",
+      subtitulo:
+        "A 5,250 sq ft climate-controlled hall for up to 200 guests, a lakeside arch and a garden gazebo for the ceremony, a swing-and-fire-pit patio, the Bridal Retreat and the Groom's Cabin, on 53 acres in Mount Pleasant.",
+      foto: foto("aerial-lake-property", "Aerial view of the lake, the white hall and the arch among the trees of the 53-acre property", F("116__9d8d5f_38f78f33e78744f6a1be90d072884a08~mv2.jpg"), "vista aérea", "horizontal", "5464px"),
+      apresentacao: {
+        eyebrow: "The Venue",
+        titulo: "Family owned, planned for your guests",
+        texto: [
+          "The Retreat at Sugarhill is family owned and operated, and every detail of the property was planned with couples and their guests in mind. The four-acre lake is the backdrop for both ceremony sites, and the hall sits a short walk from the water, with tall windows onto the grounds.",
+          "The décor room, the farmhouse tables, the photo booth and the audio guest book come with every rental, and the staff sets up and breaks down for you. Come walk it on a tour.",
+        ],
+      },
+      legendas: [
+        "The hall measures 5,250 sq ft and holds up to 200 guests, with tables and 200 chairs included.",
+        "A sound system with handheld and lavalier mics covers the outdoor ceremony area and the hall.",
+        "The Chapel, a waterside ceremony space with a cathedral ceiling, is under construction now.",
+      ],
+      depoimento: 1,
+      seo: {
+        titulo: "The Venue",
+        descricao: "The Retreat at Sugarhill in Mount Pleasant, TX: a 5,250 sq ft hall for 200 guests and two lakeside ceremony sites on 53 acres.",
+      },
+    },
+    packages: {
+      enabled: true,
+      href: "/packages",
+      nome: "Packages",
+      link_home: "See all packages →",
+      titulo: "Weddings from $2,900",
+      subtitulo:
+        "Rent the venue by the day, with a 14-hour window for up to 150 guests: weekdays $2,900, Sundays $3,800, Fridays $4,000 and Saturdays $4,800. Two-day weekends start at $5,625.",
+      foto: foto("reception-long-tables", "Long tables with white linens and gold chargers in front of the hall's tall windows", F("022__9d8d5f_4dcfb2846937467ca1df7b2566cd8326~mv2.jpg"), "recepção", "horizontal", "7009px"),
+      apresentacao: {
+        eyebrow: "Packages",
+        titulo: "The price you see is the price you pay",
+        texto: [
+          "Every rental includes a 14-hour window with up to five hours for the ceremony and reception, for up to 150 guests. The décor room, tables and chairs with setup and breakdown, the Bridal Retreat, the Groom's Cabin, the photo booth and the audio guest book are part of it. No hidden fees, no gratuity charges.",
+          "Four all-inclusive packages add coordination, a DJ, bartending and security, up to The Grand with catering, cake, florals and lodging. Ask about them on your tour.",
+        ],
+      },
+      legendas: [
+        "Jan/Feb and Jul/Aug dates are $350 off every rate.",
+        "Hosting 151 to 200 guests is a $500 add-on.",
+        "Most couples spend between $3K and $20K with the venue, depending on dates and services.",
+      ],
+      depoimento: 0,
+      seo: {
+        titulo: "Packages",
+        descricao: "Wedding prices at The Retreat at Sugarhill, Mount Pleasant, TX: weekdays $2,900, Saturdays $4,800, two-day weekends from $5,625.",
+      },
+    },
+    stay: {
+      enabled: true,
+      href: "/stay",
+      nome: "Stay",
+      link_home: "See all stays →",
+      titulo: "Stay the weekend",
+      subtitulo:
+        "The Bridal Retreat and the Groom's Cabin for the night before, a honeymoon suite for the wedding night and three cabins for your guests, on 53 acres with stocked ponds, trails and a fire pit.",
+      foto: foto("guest-cabin-exterior", "A small brown cabin with a covered porch at dusk", F("083__9d8d5f_ca76c85adf8a4afbbd37cda946cc77f5~mv2.jpeg"), "cabana", "horizontal", "1920px"),
+      apresentacao: {
+        eyebrow: "Stay",
+        titulo: "Turn the day into a weekend",
+        texto: [
+          "With a two-day booking you arrive the day before, set up, host your rehearsal dinner and sleep on the property, so the wedding morning starts with everything in place. The Grand package adds the honeymoon suite for the wedding night.",
+          "Three cabins are available for guests, booked through Airbnb or by email. Between events there is fishing in the stocked ponds, walking and bike trails, a paddle boat and the fire pit at night.",
+        ],
+      },
+      legendas: [
+        "Guest cabins are booked on Airbnb or by emailing the venue for availability.",
+        "Stocked ponds for fishing, walking and bike trails, and a paddle boat.",
+        "A private BBQ area and fire pit for evenings under the stars.",
+      ],
+      depoimento: 3,
+      seo: {
+        titulo: "Stay",
+        descricao: "Cabins and overnight stays at The Retreat at Sugarhill in Mount Pleasant, TX: 3 guest cabins plus the Bridal Retreat and Groom's Cabin.",
+      },
+    },
   } satisfies Record<string, Pagina>,
 
-  // SEO local (VENUE-TEMPLATE §5). O <title> sai de identidade: "[Nome] | Wedding Venue in [Cidade], [UF]"
   seo: {
-    // domínio final do site (canonical e breadcrumbs); null = identidade.site
     url: null as string | null,
-    descricao: "[PLACEHOLDER] Meta description com cidade + capacidade + diferencial.",
-    // noindex no template e nas demos de venda; false só ao publicar o site do cliente
+    descricao:
+      "The Retreat at Sugarhill is a lakeside wedding venue on 53 acres in Mount Pleasant, TX, for up to 200 guests, with cabins on site. From $2,900.",
     noindex: true,
   },
 
-  // rótulos de interface usados por vários componentes
   ui: {
     home: "home",
     breadcrumb: "Breadcrumb",

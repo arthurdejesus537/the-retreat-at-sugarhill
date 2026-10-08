@@ -1,0 +1,61 @@
+{
+  "capturado_em": "2026-10-08",
+  "site": "https://www.theretreatatsugarhill.com/",
+  "plataforma": "Wix (siteRevision 696)",
+  "captura": "~/Downloads/venue-sites/venues/theretreatatsugarhill",
+  "identidade": {
+    "nome": { "valor": "The Retreat at Sugarhill", "fonte": "/", "confianca": "alta" },
+    "endereco": { "valor": "658 E Farm Road 71, Mount Pleasant, TX 75455", "fonte": "rodapé", "confianca": "alta" },
+    "telefone": { "valor": "(903) 921-4320", "fonte": "rodapé, /contact-us", "confianca": "alta" },
+    "email": { "valor": "info@theretreatatsugarhill.com", "fonte": "header (mailto)", "confianca": "alta" },
+    "donos": { "valor": "Crystal and Sean (family owned and operated)", "fonte": "/about-us, depoimentos em /gallery e /cabin-rentals-mt-pleasant-tx", "confianca": "media" },
+    "instagram": { "valor": "https://www.instagram.com/theretreatatsugarhill/", "fonte": "rodapé", "confianca": "alta" },
+    "facebook": { "valor": "https://www.facebook.com/TheRetreatAtSugarhill", "fonte": "rodapé", "confianca": "alta" },
+    "tiktok": { "valor": "https://www.tiktok.com/@theretreatatsugarhill", "fonte": "rodapé", "confianca": "alta" },
+    "tour_online": { "valor": "https://theretreatatsugarhill.hbportal.co/public/650f11dd4b190f042670d3ef", "fonte": "header (Book a Tour, HoneyBook)", "confianca": "alta" }
+  },
+  "numeros": {
+    "acres": { "valor": 53, "fonte": "/", "confianca": "alta" },
+    "lago": { "valor": "4 acres", "fonte": "/weddings, /about-us", "confianca": "alta" },
+    "salao_sqft": { "valor": 5250, "fonte": "/faq", "confianca": "alta" },
+    "capacidade_max": { "valor": 200, "fonte": "/, /faq", "confianca": "alta" },
+    "capacidade_incluida": { "valor": 150, "fonte": "/weddings", "confianca": "alta" },
+    "cabanas": { "valor": 3, "fonte": "/ (FAQ)", "confianca": "alta" }
+  },
+  "precos_aluguel": {
+    "fonte": "/weddings (Investment)",
+    "janela": "14 horas, até 5 h de cerimônia + recepção, até 150 convidados",
+    "segunda_a_quarta": "$2,900",
+    "domingo": "$3,800",
+    "sexta": "$4,000",
+    "sabado": "$4,800",
+    "quinta_sexta": "$5,625",
+    "sexta_sabado": "$7,800",
+    "especial_jan_fev_jul_ago": "$350 off",
+    "convidados_151_200": "$500",
+    "gasto_tipico": "Most couples spend between $3K-20K with the venue (/)"
+  },
+  "pacotes_all_inclusive_sem_preco": ["Simply Sugarhill", "The Perfect Beginning", "The Signature Experience", "THE GRAND"],
+  "politicas": {
+    "bebida": "TABC-certified insured bartender; approved security + event liability insurance with host liquor liability (/faq)",
+    "deposito": "refundable security deposit (/faq)",
+    "montagem": "weekend package: setup from 8am Friday, cleanup by 3pm Sunday (/faq)",
+    "fornecedores": "own vendors without additional fees (/faq)",
+    "decoracao": "no nails, staples or damage (/faq)",
+    "som": "sound system with handheld + lavalier mic (/faq)",
+    "gerente": "manager on property on the day (/faq)"
+  },
+  "distancias_do_site": { "Sulphur Springs": "1/2 hour", "Texarkana": "1 hr", "Longview": "1 hr", "fonte": "/ (FAQ)" },
+  "conflitos": [
+    "Sulphur Springs: o site diz 1/2 hora; Mount Pleasant–Sulphur Springs é ~50 milhas pela I-30 (OSRM a partir das coordenadas do Wix: 64 min).",
+    "E-mail com erros de digitação no rodapé (TheRetreatAtSugarhill..com) e na página de cabanas (thetretreatatsugarhill.com).",
+    "Página 'Wedding Venue in Mt Vernon Texas' em alts de fotos da home (o venue é em Mount Pleasant)."
+  ],
+  "lacunas": [
+    "Preços dos 4 pacotes all-inclusive",
+    "Quantas pessoas dorme cada cabana / Bridal Retreat / Groom's Cabin; fotos da honeymoon suite",
+    "Horário de término, plano de chuva, estacionamento, animais",
+    "Ano de abertura",
+    "Qual publicação deu o '2026 Readers' Choice Awards Winner'"
+  ]
+}
